@@ -1,0 +1,15 @@
+# Ignore Quarto build artifacts
+_site/
+docs/
+
+# RStudio & R artifacts
+.Rhistory
+.RData
+.Rproj.user/
+
+# Quarto intermediate files
+*.utf8.md
+*.knit.md
+
+# Logs and temporary files
+*.log
