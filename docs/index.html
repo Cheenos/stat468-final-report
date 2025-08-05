@@ -702,7 +702,7 @@ p_{\mathrm{bluff}} \;=\; P\bigl(S_t = B \mid G_t, R_t\bigr)
 \label{eq:opt}
 \mathrm{Opt} \;=\; (\overline{E} - \overline{O}) \times \nu \times B
 \]</span> ##### Variance notes, “Making live EV readings believable”</p>
-<p>Per-action equity is notoriously noise, the river card alone can swing expectation by a fill pot. Following Burch’s <span class="citation" data-cites="AIVAT2020">(<a href="#ref-AIVAT2020" role="doc-biblioref"><strong>AIVAT2020?</strong></a>)</span> AICAT method we can slash variance by primarily focusing on EV over Equity. For each street we replace equity with its conditional expectation given the exposed board. This removes variance that is purely due to future RNG. Lower variance stabilizes both the HMM training and the Optimality ranking, so small hand samples are less prone to lucky “heat-runs.”</p>
+<p>Per-action equity is notoriously noise, the river card alone can swing expectation by a fill pot. Following Burch’s <span class="citation" data-cites="Burch2020">(<a href="#ref-Burch2020" role="doc-biblioref">Burch et al., 2020</a>)</span> AICAT method we can slash variance by primarily focusing on EV over Equity. For each street we replace equity with its conditional expectation given the exposed board. This removes variance that is purely due to future RNG. Lower variance stabilizes both the HMM training and the Optimality ranking, so small hand samples are less prone to lucky “heat-runs.”</p>
 </section>
 <section id="next-steps-in-modelling" class="level5">
 <h5 class="anchored" data-anchor-id="next-steps-in-modelling">Next Steps in Modelling</h5>
