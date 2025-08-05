@@ -1,6 +1,5 @@
 # Ignore Quarto build artifacts
 _site/
-docs/
 
 # RStudio & R artifacts
 .Rhistory
@@ -13,3 +12,5 @@ docs/
 
 # Logs and temporary files
 *.log
+
+/.quarto/
