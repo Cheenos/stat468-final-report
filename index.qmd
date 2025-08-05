@@ -31,6 +31,8 @@ Data → Tidy → Transform → Model → Visualize → Communicate
   The result is a tool that turns raw hand histories into actionable coaching notes in seconds, setting the stage for deeper Monte-Carlo equity engines, live dashboards, and what-if simulators outlined later in this report.
 
   The Poker Data Recorder squarely tackles the talent-management functions that matter most at the table. It turns every action into equity versus odds metrics, an HMM-based bluff rate, and a single Optimality score, giving you rigorous player evaluation and prospect assessment in minutes rather than hours. Because the summaries call out who is leaking EV and how, the app also serves as a player-development aid; coaches can hand a struggling grinder a bullet-point list of specific leaks to plug. The live EV trend and aggression bubble plot feed directly into on-field strategy and real-time decision making: you instantly see whether to isolate, avoid, or lean on a given opponent. At the group level these same metrics help with light personnel decisions such as who to stake, who to bench, or how to seat friends in a home game, nudging you toward an optimized roster value. Functions that hinge on external bankroll contracts, such as full trade analysis, roster construction, asset valuation, and formal player acquisition strategy, sit outside the app\'s current scope, but the rich performance data it produces would be the natural input for those higher-level front-office tools.
+  
+## https://cheenos.shinyapps.io/poker-metrics/
 
 # Data Collection and Generation {#Data}
 
@@ -356,7 +358,7 @@ $$
 $$
 ##### Variance notes, “Making live EV readings believable”
 
-Per-action equity is notoriously noise, the river card alone can swing expectation by a fill pot. Following Burch’s [@AIVAT2020] AICAT method we can slash variance by primarily focusing on EV over Equity. For each street we replace equity with its conditional expectation given the exposed board. This removes variance that is purely due to future RNG. Lower variance stabilizes both the HMM training and the Optimality ranking, so small hand samples are less prone to lucky “heat-runs.”
+Per-action equity is notoriously noise, the river card alone can swing expectation by a fill pot. Following Burch’s [@Burch2020] AICAT method we can slash variance by primarily focusing on EV over Equity. For each street we replace equity with its conditional expectation given the exposed board. This removes variance that is purely due to future RNG. Lower variance stabilizes both the HMM training and the Optimality ranking, so small hand samples are less prone to lucky “heat-runs.”
 
 ##### Next Steps in Modelling
 Building our HMM Optimality Framework, the following enhancements will sharpen predictive power and real world relevance. 
@@ -397,7 +399,7 @@ This chart shows how each player’s stack evolves hand-by-hand alongside the to
 ```
 
 
-### Aggrssion Bubble Plot
+### Aggression Bubble Plot
 
 The aggression bubble plot distils each player’s betting profile into a single point using four visual channels:
 
@@ -478,6 +480,7 @@ For a selected player, we chart per-action EV over time. A zero-EV dashed highli
   2.	EV per Action (y-axis). Positive value denote “+EV” decisions; negative values indicate chip losing moves
   3.	Colour = Action type. Differentiates Calls, bets, and raises so you can spot which action type carries the most variance.
 
+
 ![](pev.png){#fig:myplot fig-alt="Showcase of Player EV Plot" fig-cap="Showcase of Player EV Plot"}
 
 ```{r}
@@ -519,4 +522,10 @@ The Optimality Table ranks each player by their composite “Optimality” score
   -	Optimality multiplies those three factors into one number, so a high-scoring player must excel on all fronts
 
 Immediately next to the table, the Headline Summary pulls out the story in two sentences:
+
+![](or.png){#fig:myplot fig-alt="Showcase of Optimality" fig-cap="Showcase of Optimality"}
+
+This detailed table plus a concise, human read-able paragraph ensures that both data savvy coaches and casual observers instantly grasp who’s excelling, who is leaking chips and which levers each player should pull to improve.
+
+I used ChatGPT to debug my entire workflow [@chatgpt_log1; @chatgpt_log2; @chatgpt_log3, @chatgpt_log4, @chatgpt_log5, @chatgpt_log6, @chatgpt_log7].
 

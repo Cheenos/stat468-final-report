@@ -168,7 +168,10 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#abstract" id="toc-abstract" class="nav-link active" data-scroll-target="#abstract">Abstract</a></li>
+  <li><a href="#abstract" id="toc-abstract" class="nav-link active" data-scroll-target="#abstract">Abstract</a>
+  <ul class="collapse">
+  <li><a href="#httpscheenos.shinyapps.iopoker-metrics" id="toc-httpscheenos.shinyapps.iopoker-metrics" class="nav-link" data-scroll-target="#httpscheenos.shinyapps.iopoker-metrics">https://cheenos.shinyapps.io/poker-metrics/</a></li>
+  </ul></li>
   <li><a href="#Data" id="toc-Data" class="nav-link" data-scroll-target="#Data">Data Collection and Generation</a>
   <ul class="collapse">
   <li><a href="#synthetic-pokerstars-log" id="toc-synthetic-pokerstars-log" class="nav-link" data-scroll-target="#synthetic-pokerstars-log">Synthetic PokerStars Log</a></li>
@@ -237,6 +240,9 @@ window.Quarto = {
 </ul>
 <p>The result is a tool that turns raw hand histories into actionable coaching notes in seconds, setting the stage for deeper Monte-Carlo equity engines, live dashboards, and what-if simulators outlined later in this report.</p>
 <p>The Poker Data Recorder squarely tackles the talent-management functions that matter most at the table. It turns every action into equity versus odds metrics, an HMM-based bluff rate, and a single Optimality score, giving you rigorous player evaluation and prospect assessment in minutes rather than hours. Because the summaries call out who is leaking EV and how, the app also serves as a player-development aid; coaches can hand a struggling grinder a bullet-point list of specific leaks to plug. The live EV trend and aggression bubble plot feed directly into on-field strategy and real-time decision making: you instantly see whether to isolate, avoid, or lean on a given opponent. At the group level these same metrics help with light personnel decisions such as who to stake, who to bench, or how to seat friends in a home game, nudging you toward an optimized roster value. Functions that hinge on external bankroll contracts, such as full trade analysis, roster construction, asset valuation, and formal player acquisition strategy, sit outside the app's current scope, but the rich performance data it produces would be the natural input for those higher-level front-office tools.</p>
+<section id="httpscheenos.shinyapps.iopoker-metrics" class="level2">
+<h2 class="anchored" data-anchor-id="httpscheenos.shinyapps.iopoker-metrics">https://cheenos.shinyapps.io/poker-metrics/</h2>
+</section>
 </section>
 <section id="Data" class="level1">
 <h1>Data Collection and Generation</h1>
@@ -872,8 +878,10 @@ p_{\mathrm{bluff}} \;=\; P\bigl(S_t = B \mid G_t, R_t\bigr)
 <li>Bluff Rate (= Mean HMM Bluff Probability) captures their discipline with inpaired or weak holdings</li>
 <li>Optimality multiplies those three factors into one number, so a high-scoring player must excel on all fronts</li>
 </ul>
-<p>Immediately next to the table, the Headline Summary pulls out the story in two sentences: <img src="or.png" id="fig:myplot" class="img-fluid" data-fig-cap="Showcase of Optimality" alt="Showcase of Optimality"></p>
+<p>Immediately next to the table, the Headline Summary pulls out the story in two sentences:</p>
+<p><img src="or.png" id="fig:myplot" class="img-fluid" data-fig-cap="Showcase of Optimality" alt="Showcase of Optimality"></p>
 <p>This detailed table plus a concise, human read-able paragraph ensures that both data savvy coaches and casual observers instantly grasp who’s excelling, who is leaking chips and which levers each player should pull to improve.</p>
+<p>I used ChatGPT to debug my entire workflow <span class="citation" data-cites="chatgpt_log1 chatgpt_log2 chatgpt_log3">OpenAI ChatGPT (<a href="#ref-chatgpt_log7" role="doc-biblioref">2025a</a>)</span>.</p>
 
 
 
@@ -892,6 +900,27 @@ Chen, B., &amp; Ankenman, J. (2006). <em>The mathematics of poker</em>. ConJelCo
 </div>
 <div id="ref-Kuznetsov2024" class="csl-entry" role="listitem">
 Kuznetsov. (2024). Hidden markov models for opponent modelling in poker. <em>Proc. Of Another Conf.</em>
+</div>
+<div id="ref-chatgpt_log7" class="csl-entry" role="listitem">
+OpenAI ChatGPT. (2025a). <em>ChatGPT conversation log: Additional formatting help</em>. <a href="https://chatgpt.com/share/689187a9-3ed0-8010-9f0b-f90ed6ab1bc9" class="uri">https://chatgpt.com/share/689187a9-3ed0-8010-9f0b-f90ed6ab1bc9</a>.
+</div>
+<div id="ref-chatgpt_log2" class="csl-entry" role="listitem">
+OpenAI ChatGPT. (2025b). <em>ChatGPT conversation log: APA CSL file</em>. <a href="https://chatgpt.com/share/68912ddc-8b5c-8010-84db-9daf37105262" class="uri">https://chatgpt.com/share/68912ddc-8b5c-8010-84db-9daf37105262</a>.
+</div>
+<div id="ref-chatgpt_log4" class="csl-entry" role="listitem">
+OpenAI ChatGPT. (2025c). <em>ChatGPT conversation log: Citation formatting</em>. <a href="https://chatgpt.com/share/68912ecb-9268-8010-86a4-dff118277174" class="uri">https://chatgpt.com/share/68912ecb-9268-8010-86a4-dff118277174</a>.
+</div>
+<div id="ref-chatgpt_log6" class="csl-entry" role="listitem">
+OpenAI ChatGPT. (2025d). <em>ChatGPT conversation log: List formatting</em>. <a href="https://chatgpt.com/share/68913056-436c-8010-8bc0-67b282d8f9a0" class="uri">https://chatgpt.com/share/68913056-436c-8010-8bc0-67b282d8f9a0</a>.
+</div>
+<div id="ref-chatgpt_log5" class="csl-entry" role="listitem">
+OpenAI ChatGPT. (2025e). <em>ChatGPT conversation log: Math in tables and equations</em>. <a href="https://chatgpt.com/share/68912f46-0ec8-8010-b815-426a2a144691" class="uri">https://chatgpt.com/share/68912f46-0ec8-8010-b815-426a2a144691</a>.
+</div>
+<div id="ref-chatgpt_log1" class="csl-entry" role="listitem">
+OpenAI ChatGPT. (2025f). <em>ChatGPT conversation log: Quarto citation help</em>. <a href="https://chatgpt.com/share/68912db1-5478-8010-b9f8-42e9ce6d2f03" class="uri">https://chatgpt.com/share/68912db1-5478-8010-b9f8-42e9ce6d2f03</a>.
+</div>
+<div id="ref-chatgpt_log3" class="csl-entry" role="listitem">
+OpenAI ChatGPT. (2025g). <em>ChatGPT conversation log: Renaming index.qmd</em>. <a href="https://chatgpt.com/share/68912e9a-91c8-8010-b914-12c8f51ea2c3" class="uri">https://chatgpt.com/share/68912e9a-91c8-8010-b914-12c8f51ea2c3</a>.
 </div>
 <div id="ref-Sire2007" class="csl-entry" role="listitem">
 Sire, C. (2007). Universal statistical properties of poker tournaments. <em>Journal of Statistical Mechanics</em>.
