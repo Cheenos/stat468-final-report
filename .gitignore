@@ -1,16 +1,9 @@
-# Ignore Quarto build artifacts
-_site/
-
-# RStudio & R artifacts
-.Rhistory
-.RData
-.Rproj.user/
-
-# Quarto intermediate files
-*.utf8.md
-*.knit.md
-
-# Logs and temporary files
-*.log
-
-/.quarto/
+.Rhistory 
+.RData 
+.Rproj.user/ 
+.Renviron 
+renv/library/ 
+renv/staging/ 
+rsconnect/ 
+*.Rproj 
+Thumbs.db
