@@ -1,66 +1,93 @@
-# --- EDIT THESE TWO LINES -----------------------------------------------------
-BUCKET   <- "pokermetricbucket"     # your S3 bucket (no s3://)
+BUCKET   <- "pokermetricbucket"  
 DATAPATH <- "C:/Users/eddy2/OneDrive/Documents/Stat 468/Final Project/PokerDta/poker_log-Hand1.xlsx"
-# -----------------------------------------------------------------------------
 
-suppressPackageStartupMessages({
-  library(dplyr)
-  library(readr)
-  library(readxl)
-  library(vetiver)
-  library(pins)
-  library(depmixS4)   # HMM
-})
+library(dplyr)
+library(readr)
+library(readxl)
+library(vetiver)
+library(pins)
+library(depmixS4)
+library(tibble)
 
-# Helpers (build_hmm_features, train_hmm, predict.hmm_bluff)
-# Make sure this file exists; otherwise paste those functions here.
-source("PokerMetricGit.R")
 
-# --- Load data ---------------------------------------------------------------
+# ---- Inline helpers ---------------------------------------------------------
+build_hmm_features <- function(df) {
+  df %>%
+    filter(Action %in% c("bet", "raise")) %>%
+    mutate(
+      BluffGap = WagerOdds - Equity,
+      RelSize  = if_else(PotBefore > 0, BetAmount / PotBefore, NA_real_)
+    ) %>%
+    filter(
+      !is.na(BluffGap), is.finite(BluffGap),
+      !is.na(RelSize),  is.finite(RelSize)
+    ) %>%
+    select(BluffGap, RelSize, everything())
+}
+
+train_hmm <- function(at) {
+  mod <- depmixS4::depmix(
+    response = list(BluffGap ~ 1, RelSize ~ 1),
+    data     = at,
+    nstates  = 2,
+    family   = list(gaussian(), gaussian())
+  )
+  fit_mod <- depmixS4::fit(mod, verbose = FALSE)
+  post_tr <- depmixS4::posterior(fit_mod)
+  cluster_means <- tapply(at$BluffGap, post_tr$state, mean)
+  bluff_state <- as.integer(names(which.max(cluster_means)))
+  mdl <- list(
+    fit = fit_mod,
+    bluff_state = bluff_state,
+    feature_names = c("BluffGap","RelSize")
+  )
+  class(mdl) <- "hmm_bluff"
+  mdl
+}
+
+predict.hmm_bluff <- function(object, new_data, ...) {
+  nd <- as.data.frame(new_data)[, object$feature_names, drop = FALSE]
+  post <- depmixS4::posterior(object$fit, newdata = nd)
+  as.numeric(post[[paste0("S", object$bluff_state)]])
+}
+
+# ---- Load data ---------------------------------------------------------------
 if (!file.exists(DATAPATH)) stop("Can't find file: ", DATAPATH)
-
 ext <- tolower(tools::file_ext(DATAPATH))
 df  <- switch(
   ext,
   rds  = readRDS(DATAPATH),
   csv  = readr::read_csv(DATAPATH, show_col_types = FALSE),
   xlsx = readxl::read_xlsx(DATAPATH),
-  stop("Unsupported file type: ", ext, " (use .csv, .xlsx, or .rds)")
+  stop("Unsupported file type: ", ext)
 )
 
-# If the file is raw actions, make sure analytics columns exist
 needed_cols <- c("WagerOdds","Equity","PotBefore","BetAmount","Action")
 if (!all(needed_cols %in% names(df))) {
-  # If recalc_analytics() lives in your app file, source it:
   if (!exists("recalc_analytics")) {
-    if (file.exists("app.R")) source("app.R")
-  }
-  if (!exists("recalc_analytics")) {
-    stop("Data is raw and recalc_analytics() is not available. ",
-         "Either export a processed log from your app, ",
-         "or source a file that defines recalc_analytics().")
+    stop("Missing recalc_analytics() to process raw data.")
   }
   df <- recalc_analytics(df)
 }
 
-# --- Build features & train HMM ----------------------------------------------
+# ---- Train HMM ---------------------------------------------------------------
 at <- build_hmm_features(df)
 if (nrow(at) < 3) stop("Need at least 3 bet/raise rows to train HMM; got ", nrow(at))
-
 hmm_model <- train_hmm(at)
 
-# --- Wrap for vetiver --------------------------------------------------------
-ptype <- at[0, c("BluffGap","RelSize")]  # schema vetiver expects at predict time
-v <- vetiver_model(
+# ---- Wrap for vetiver & pin to S3 --------------------------------------------
+proto <- tibble(BluffGap = double(), RelSize = double())
+
+v <- vetiver::vetiver_model(
   model          = hmm_model,
   model_name     = "hmm_bluff",
-  prototype_data = ptype,
-  description    = "2-state Gaussian HMM for bluff probability"
+  description    = "2-state Gaussian HMM for bluff probability",
+  save_ptype     = TRUE,
+  ptype          = proto   # passed via ... in your vetiver version
 )
 
-# --- Pin to S3 ---------------------------------------------------------------
-# Ensure ~/.Renviron has AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_DEFAULT_REGION
 board <- pins::board_s3(bucket = BUCKET)
-vetiver_pin_write(board, v)
+vetiver::vetiver_pin_write(board, v)
 
 cat("✓ HMM pinned to S3 bucket:", BUCKET, "as 'hmm_bluff'\n")
+
