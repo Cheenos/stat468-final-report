@@ -1,0 +1,289 @@
+PokerStars Hand #1000000001: Tournament #1234567890, $5+$0.50 NL Hold'em – Level 1 (25/50) – 2025/07/14 12:00:00 ET
+Table ‘1234567890 1’ 6-max Seat #1 is the button
+Seat 1: “AceHunter” (1500)
+Seat 2: “BluffMaster” (1500)
+Seat 3: “RiverRat”   (1500)
+Seat 4: “FlopQueen”  (1500)
+Seat 5: “StackKing”  (1500)
+Seat 6: “TiltLord”   (1500)
+BLINDS 25/50
+
+— Hand 1 —
+**Hole Cards:**
+- AceHunter [Kd Jh]
+- BluffMaster [7s 7d]
+- RiverRat  [Ad 5c]
+- FlopQueen [Qs Ts]
+- StackKing [4h 4s]
+- TiltLord  [Kh Qd]
+
+**Pre-flop:**  
+TiltLord posts SB 25, AceHunter posts BB 50.  
+BluffMaster (UTG) raises to 150; RiverRat calls 150; FlopQueen calls 150; StackKing folds; TiltLord folds; AceHunter calls 100.  
+**Pot: 600**
+
+**Flop [Jc 6h 2s]:**  
+AceHunter checks; BluffMaster bets 300; RiverRat calls 300; FlopQueen calls 300; AceHunter folds.  
+**Pot: 1500**
+
+**Turn [Tc]:**  
+BluffMaster bets 600; RiverRat folds; FlopQueen raises to 1800 all-in; BluffMaster calls 1200.  
+**River [3d]**
+
+**Showdown:**  
+- FlopQueen shows [Qs Ts] (straight, Ten to Ace)  
+- BluffMaster shows [7s 7d] (pair of sevens)  
+
+**Outcome:** FlopQueen wins 3600.
+
+Stacks: AH 1400, BM 300, RR 1350, FQ 2600, SK 1500, TL 1500
+
+— Hand 2 —
+Button→Seat #2; blinds 25/50  
+Seat stacks as above  
+
+**Hole Cards:**  
+- AceHunter [Ah Kh]  
+- BluffMaster [Qc Jc]  
+- RiverRat  [9d 9c]  
+- FlopQueen [2h 2d]  
+- StackKing [Td 9s]  
+- TiltLord  [5h 5d]  
+
+**Pre-flop:**  
+BluffMaster (SB) calls 25; RiverRat (BB) checks; FlopQueen raises to 150; StackKing calls 150; TiltLord calls 150; AceHunter folds; BluffMaster calls 125; RiverRat folds.  
+**Pot: 675**
+
+**Flop [2s 9h 4c]:**  
+BluffMaster checks; FlopQueen bets 300; StackKing folds; TiltLord calls 300; BluffMaster calls 300.  
+**Pot: 1575**
+
+**Turn [Kh]:**  
+BluffMaster checks; FlopQueen bets 600; TiltLord folds; BluffMaster calls 600.  
+**Pot: 2775**
+
+**River [7s]**  
+BluffMaster checks; FlopQueen checks.  
+
+**Showdown:**  
+- FlopQueen shows [2h 2d] (full house, Twos over Twos)  
+- BluffMaster shows [Qc Jc] (Ace high)  
+
+**Outcome:** FlopQueen wins 2775.
+
+Stacks: AH 1400, BM 900, RR 1350, FQ 5375, SK 1500, TL 1350
+
+— Hand 3 —
+Button→Seat #3; blinds 25/50  
+
+**Hole Cards:**  
+- AceHunter [6c 6d]  
+- BluffMaster [As 5s]  
+- RiverRat  [Kh Qh]  
+- FlopQueen [Jd Js]  
+- StackKing [8c 7c]  
+- TiltLord  [Ad 2d]  
+
+**Pre-flop:**  
+RiverRat raises to 150; FlopQueen calls 150; StackKing folds; TiltLord folds; AceHunter calls 150; BluffMaster folds.  
+**Pot: 375**
+
+**Flop [6h 3d 2s]:**  
+AceHunter checks; RiverRat bets 200; FlopQueen calls 200; AceHunter raises to 800; RiverRat calls 600; FlopQueen folds.  
+**Pot: 1750**
+
+**Turn [Qc]:**  
+AceHunter bets 1000; RiverRat folds.  
+
+**Outcome:** AceHunter wins 1750.
+
+Stacks: AH 3150, BM 900, RR 1000, FQ 4225, SK 1500, TL 1350
+
+— Hand 4 —
+Button→Seat #4; blinds 25/50  
+
+**Hole Cards:**  
+- AceHunter [Ts 9s]  
+- BluffMaster [Kh Kc]  
+- RiverRat  [4d 4c]  
+- FlopQueen [Ac Qc]  
+- StackKing [Jh 8h]  
+- TiltLord  [7h 7c]  
+
+**Pre-flop:**  
+FlopQueen (SB) calls 25; StackKing (BB) calls 50; TiltLord raises to 200; AceHunter folds; BluffMaster calls 200; RiverRat folds; FlopQueen folds; StackKing calls 150.  
+**Pot: 600**
+
+**Flop [Kd 7d 5c]:**  
+TiltLord bets 400; BluffMaster raises to 1200 all-in; StackKing folds; TiltLord calls 800.  
+**Turn [2h]** **River [Qs]**  
+
+**Showdown:**  
+- BluffMaster shows [Kh Kc] (quads Kings)  
+- TiltLord shows [7h 7c] (full house, Sevens over Sevens)  
+
+**Outcome:** BluffMaster wins 2400.
+
+Stacks: AH 3150, BM 3300, RR 1000, FQ 4225, SK 1500, TL 150
+
+— Hand 5 —
+Button→Seat #5; blinds 25/50  
+
+**Hole Cards:**  
+- AceHunter [Jc Jh]  
+- BluffMaster [2c 2s]  
+- RiverRat  [Qc Jd]  
+- FlopQueen [9h 8h]  
+- StackKing [Ad 3d]  
+- TiltLord  [Ks Kh]  
+
+**Pre-flop:**  
+StackKing raises to 150; TiltLord (BB) calls 100; AceHunter calls 150; BluffMaster folds; RiverRat folds; FlopQueen folds.  
+**Pot: 400**
+
+**Flop [Jd 2d 6s]:**  
+TiltLord checks; StackKing bets 250; AceHunter calls 250; TiltLord calls 250.  
+**Pot: 1150**
+
+**Turn [Th]:**  
+TiltLord checks; StackKing bets 500; AceHunter raises all-in 2150; TiltLord folds; StackKing calls 1650.  
+**River [3s]**
+
+**Showdown:**  
+- AceHunter shows [Jc Jh] (quads Jacks)  
+- StackKing shows [Ad 3d] (full house, Threes over Twos)  
+
+**Outcome:** AceHunter wins 4600.
+
+Stacks: AH 7750, BM 3300, RR 1000, FQ 4225, SK 150, TL 150
+
+— Hand 6 —
+Button→Seat #6; blinds 25/50  
+
+**Hole Cards:**  
+- AceHunter [8s 8d]  
+- BluffMaster [5c 4c]  
+- RiverRat  [Ac Kd]  
+- FlopQueen [7s 6s]  
+- StackKing [Qc Qh]  
+- TiltLord  [9c 9d]  
+
+**Pre-flop:**  
+TiltLord (SB) calls 25; AceHunter (BB) checks; BluffMaster raises to 150; RiverRat calls 150; FlopQueen calls 150; StackKing raises to 600; TiltLord folds; AceHunter folds; BluffMaster calls 450; RiverRat calls 450; FlopQueen folds.  
+**Pot: 1800**
+
+**Flop [Qs 9h 2c]:**  
+StackKing bets 1000; BluffMaster folds; RiverRat calls 1000.  
+**Pot: 3000**
+
+**Turn [3d]:**  
+RiverRat checks; StackKing bets 1200; RiverRat calls 1200.  
+**Pot: 5400**
+
+**River [8h]**  
+RiverRat checks; StackKing bets 2400; RiverRat folds.  
+
+**Outcome:** StackKing wins 5400.
+
+Stacks: AH 7750, BM 3300, RR 100, FQ 4225, SK 5550, TL 150
+
+— Hand 7 —
+Button→Seat #1; 5-max now (AceHunter out)  
+
+**Hole Cards:**  
+- BluffMaster [Kh Ts]  
+- RiverRat  [Jd 9d]  
+- FlopQueen [Tc Th]  
+- StackKing [7h 7d]  
+- TiltLord  [4s 4h]  
+
+**Pre-flop:**  
+BluffMaster (SB) calls 25; RiverRat (BB) checks; FlopQueen raises to 150; StackKing calls 150; TiltLord folds; BluffMaster calls 125; RiverRat folds.  
+**Pot: 450**
+
+**Flop [Td 5c 2h]:**  
+BluffMaster checks; FlopQueen bets 300; StackKing folds; BluffMaster calls 300.  
+**Pot: 1050**
+
+**Turn [Kd]:**  
+BluffMaster checks; FlopQueen bets 600; BluffMaster calls 600.  
+**Pot: 2250**
+
+**River [9h]**  
+BluffMaster checks; FlopQueen bets 1200; BluffMaster folds.  
+
+**Outcome:** FlopQueen wins 2250.
+
+Stacks: BM 5550, RR 100, FQ 6475, SK 5550, TL 150
+
+— Hand 8 —
+Button→Seat #2; blinds 25/50  
+
+**Hole Cards:**  
+- BluffMaster [As Ah]  
+- RiverRat  [Qc Js]  
+- FlopQueen [6h 6c]  
+- StackKing [Td 9h]  
+- TiltLord  [Kh 3h]  
+
+**Pre-flop:**  
+RiverRat (SB) calls 25; FlopQueen (BB) calls 50; StackKing raises to 150; TiltLord folds; BluffMaster reraises to 600; RiverRat folds; FlopQueen calls 450; StackKing calls 450.  
+**Pot: 1250**
+
+**Flop [6s 3c 2d]:**  
+BluffMaster checks; FlopQueen bets 400; StackKing folds; BluffMaster calls 400.  
+**Pot: 2050**
+
+**Turn [Jh]:**  
+BluffMaster checks; FlopQueen bets 800; BluffMaster raises all-in 5550; FlopQueen folds.  
+
+**Outcome:** BluffMaster wins 2050.
+
+Stacks: BM 7600, RR 100, FQ 6475, SK 5550, TL 150
+
+— Hand 9 —
+Button→Seat #3  
+
+**Hole Cards:**  
+- BluffMaster [9c 9s]  
+- RiverRat  [Ad Qs]  
+- FlopQueen [Js 7s]  
+- StackKing [4d 4c]  
+- TiltLord  [Kh Ts]  
+
+**Pre-flop:**  
+FlopQueen (SB) calls 25; StackKing (BB) raises to 150; TiltLord folds; BluffMaster calls 150; RiverRat calls 150; FlopQueen calls 125.  
+**Pot: 600**
+
+**Flop [9h 6d 2s]:**  
+FlopQueen checks; StackKing bets 300; BluffMaster calls 300; RiverRat folds.  
+**Pot: 1200**
+
+**Turn [Qs]:**  
+FlopQueen checks; StackKing bets 600; BluffMaster raises to 1600; StackKing folds.  
+
+**Outcome:** BluffMaster wins 1200.
+
+Stacks: BM 8800, RR 100, FQ 6475, SK 5550, TL 150
+
+— Hand 10 —
+Button→Seat #4  
+
+**Hole Cards:**  
+- BluffMaster [Kc Jc]  
+- RiverRat  [8d 8s]  
+- FlopQueen [Ac 4c]  
+- StackKing [Ts Th]  
+- TiltLord  [5d 5c]  
+
+**Pre-flop:**  
+StackKing raises to 150; TiltLord folds; BluffMaster calls 150; RiverRat calls 150; FlopQueen folds; StackKing calls extra 0.  
+**Pot: 600**
+
+**Flop [Ts 8c 2c]:**  
+StackKing bets 300; BluffMaster calls 300; RiverRat raises to 1200; StackKing folds; BluffMaster folds.  
+**Pot: 1200**
+
+**Outcome:** RiverRat wins 1200.
+
+Final Stacks: BM 8800, RR 1300, FQ 6475, SK 5550, TL 150
