@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.31">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Eddy Ji">
+<meta name="dcterms.date" content="2025-08-05">
+
+<title>STAT 468 Final Project Report</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-dfb324f25d9b1687192fa8be62ac8f9c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#abstract" id="toc-abstract" class="nav-link active" data-scroll-target="#abstract">Abstract</a></li>
+  <li><a href="#Data" id="toc-Data" class="nav-link" data-scroll-target="#Data">Data Collection and Generation</a>
+  <ul class="collapse">
+  <li><a href="#synthetic-pokerstars-log" id="toc-synthetic-pokerstars-log" class="nav-link" data-scroll-target="#synthetic-pokerstars-log">Synthetic PokerStars Log</a></li>
+  <li><a href="#live-two-hour-session" id="toc-live-two-hour-session" class="nav-link" data-scroll-target="#live-two-hour-session">Live Two Hour session</a></li>
+  </ul></li>
+  <li><a href="#tidy" id="toc-tidy" class="nav-link" data-scroll-target="#tidy">Tidy</a>
+  <ul class="collapse">
+  <li><a href="#full-cleaning-process" id="toc-full-cleaning-process" class="nav-link" data-scroll-target="#full-cleaning-process">Full Cleaning Process</a></li>
+  </ul></li>
+  <li><a href="#transform" id="toc-transform" class="nav-link" data-scroll-target="#transform">Transform</a></li>
+  <li><a href="#modelling" id="toc-modelling" class="nav-link" data-scroll-target="#modelling">Modelling</a></li>
+  <li><a href="#visualizing-and-communication" id="toc-visualizing-and-communication" class="nav-link" data-scroll-target="#visualizing-and-communication">Visualizing and Communication</a>
+  <ul class="collapse">
+  <li><a href="#stack-and-plot-volume-area-chart" id="toc-stack-and-plot-volume-area-chart" class="nav-link" data-scroll-target="#stack-and-plot-volume-area-chart">Stack and Plot Volume Area Chart</a></li>
+  <li><a href="#aggrssion-bubble-plot" id="toc-aggrssion-bubble-plot" class="nav-link" data-scroll-target="#aggrssion-bubble-plot">Aggrssion Bubble Plot</a></li>
+  <li><a href="#ev-scatter-plot" id="toc-ev-scatter-plot" class="nav-link" data-scroll-target="#ev-scatter-plot">EV Scatter Plot</a></li>
+  <li><a href="#optimal-table-and-headline-summary" id="toc-optimal-table-and-headline-summary" class="nav-link" data-scroll-target="#optimal-table-and-headline-summary">Optimal Table and Headline Summary</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">STAT 468 Final Project Report</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Eddy Ji </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 5, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="abstract" class="level1">
+<h1>Abstract</h1>
+<p>Poker may be a game of incomplete information, but the modern table is overflowing with data, stack depths, bet sizes, board textures, and the subtle gaps between pot odds and real equity that separate a solid value bet from an expensive bluff. My goal was to capture that information while the chips are still moving, enrich it with fast analytics, and surface insights quickly enough to influence live play.</p>
+<p>To do this I built an R shiny "Poker EV tool". This app replaces the scratch pad notetaking with an end-to-end pipeline that follows the classic data-science staircase.</p>
+<p>Data → Tidy → Transform → Model → Visualize → Communicate</p>
+<ul>
+<li><p>Collect: Live inputs for each action plus a drag and drop import of PokerStars Text logs and Holdem Manager Spreadsheets.</p></li>
+<li><p>Tidy and Transform: Every hand explodes into a long table of atomic actions, then gains derived fields, running pot size, pot odds, equity proxies and street level expected value.</p></li>
+<li><p>Model: A two-state Hidden Markov Model (HMM) flags likely bluff in real time; a custom optimality score ranks who's profiting and who is leaking.</p></li>
+<li><p>Visualize and Communicate. One click reveals stack-versus-pot area charts, an aggression bubble plot, per-player EV trends, and plain English bullet summaries to be digested by a general audience.</p></li>
+</ul>
+<p>The result is a tool that turns raw hand histories into actionable coaching notes in seconds, setting the stage for deeper Monte-Carlo equity engines, live dashboards, and what-if simulators outlined later in this report.</p>
+<p>The Poker Data Recorder squarely tackles the talent-management functions that matter most at the table. It turns every action into equity versus odds metrics, an HMM-based bluff rate, and a single Optimality score, giving you rigorous player evaluation and prospect assessment in minutes rather than hours. Because the summaries call out who is leaking EV and how, the app also serves as a player-development aid; coaches can hand a struggling grinder a bullet-point list of specific leaks to plug. The live EV trend and aggression bubble plot feed directly into on-field strategy and real-time decision making: you instantly see whether to isolate, avoid, or lean on a given opponent. At the group level these same metrics help with light personnel decisions such as who to stake, who to bench, or how to seat friends in a home game, nudging you toward an optimized roster value. Functions that hinge on external bankroll contracts, such as full trade analysis, roster construction, asset valuation, and formal player acquisition strategy, sit outside the app's current scope, but the rich performance data it produces would be the natural input for those higher-level front-office tools.</p>
+</section>
+<section id="Data" class="level1">
+<h1>Data Collection and Generation</h1>
+<p>The project runs on two deliberately different data sets so that the pipeline would face both idealized input and real-world chaos.</p>
+<section id="synthetic-pokerstars-log" class="level3">
+<h3 class="anchored" data-anchor-id="synthetic-pokerstars-log">Synthetic PokerStars Log</h3>
+<p>To battle test the parse before I incorporate real gameplay, I used GPT-o4 to auto generate 10 independent hands, 6 max no-limit-Hold’em log in native PokerStars .txt syntax. Prompts randomized seat changes, blind levels, raise amounts, street length which forced every branch of regex to be used. Although the AI log at points did not make much sense in terms of a poker context, it allowed me to work on parsing a large sample of data to be used for my needs. It has made my parsing code more robust and showcase the ability to parse text logs for convenience.</p>
+<section id="example-hand" class="level4">
+<h4 class="anchored" data-anchor-id="example-hand">Example Hand</h4>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># PokerStars Hand #1000000001: Tournament #1234567890, $5+$0.50 NL Hold'em – Level 1 (25/50) – 2025/07/14 12:00:00 ET</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Table ‘1234567890 1’ 6-max Seat #1 is the button</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Seat 1: “AceHunter” (1500)</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Seat 2: “BluffMaster” (1500)</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Seat 3: “RiverRat”   (1500)</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Seat 4: “FlopQueen”  (1500)</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Seat 5: “StackKing”  (1500)</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Seat 6: “TiltLord”   (1500)</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># BLINDS 25/50</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># — Hand 1 —</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># **Hole Cards:**</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># - AceHunter [Kd Jh]</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># - BluffMaster [7s 7d]</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># - RiverRat  [Ad 5c]</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># - FlopQueen [Qs Ts]</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># - StackKing [4h 4s]</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co"># - TiltLord  [Kh Qd]</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co"># **Pre-flop:**  </span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co"># TiltLord posts SB 25, AceHunter posts BB 50.  </span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co"># BluffMaster (UTG) raises to 150; RiverRat calls 150; FlopQueen calls 150; StackKing folds; TiltLord folds; AceHunter calls 100.  </span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co"># **Pot: 600**</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co"># **Flop [Jc 6h 2s]:**  </span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co"># AceHunter checks; BluffMaster bets 300; RiverRat calls 300; FlopQueen calls 300; AceHunter folds.  </span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co"># **Pot: 1500**</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co"># **Turn [Tc]:**  </span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="co"># BluffMaster bets 600; RiverRat folds; FlopQueen raises to 1800 all-in; BluffMaster calls 1200.  </span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="co"># **River [3d]**</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+</section>
+<section id="live-two-hour-session" class="level3">
+<h3 class="anchored" data-anchor-id="live-two-hour-session">Live Two Hour session</h3>
+<p>Once the bare-bones of the Shiny poker recorder was stable, I enlisted 7 friends from the UWPSC (University of Waterloo Poker Studies club) to play a home game for over two hours. Every hole card, post, bet, call, raise, check, and fold was entered with the app. Producing over 20 hands each with their own action rows. Because stacks, board cards, and button positions were captured live, it showcased the intensive data that each hand produces. It also highlighted some quality of life improvements that the app could use to improve the efficiency of collecting live data.</p>
+<p><img src="livedata.png" id="fig:myplot" class="img-fluid" style="width:70.0%" data-fig-cap="Showcase of Live Data Recorder." alt="Showcase of Live Data Recorder"></p>
+<p>Together, the AI-generated file proved the pipeline’s structural robustness, while the home-game capture supplied the noisy, real-life data on which all subsequent equity, EV, and bluff-probability analyses in this report are based.</p>
+<p>The recorder is intentionally narrow scoped. It ingests only three data shapes, which are built into the same default column template the app itself exports. 1. Live clicks entered in the Shiny UI, which naturally conform to that template. 2. PokerStars hand-history .txt files that follow the site’s standard syntax; the parser rewrites them into the template but will reject logs from other rooms (GG, ACR, Winamax) or mixed-game formats. 3. Spreadsheets previously exported by this app—either .csv or .xlsx—because they already match the template’s column names (HandNumber, Player, Action, BetAmount, StackBefore, and so on). Any file outside these three cases kicks up a “Unsupported format” warning and is ignored, keeping the analytics pipeline simple and predictable.</p>
+<p><img src="downloadedlog.png" id="fig:myplot" class="img-fluid" style="width:100.0%" data-fig-cap="Showcase of downloaded Recorded Log" alt="Showcase of downloaded Recorded Log"> The actions are stored in this format which can be re-uploaded into the App</p>
+</section>
+</section>
+<section id="tidy" class="level1">
+<h1>Tidy</h1>
+<p>The tidying layer is almost entirely code-driven and lives inside 2 helpers within the file.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 28%">
+<col style="width: 58%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Helper</th>
+<th style="text-align: left;">Where it fires</th>
+<th style="text-align: left;">What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>get_action_summary()</code></td>
+<td style="text-align: left;">when a <code>.txt</code> PokerStars log is uploaded</td>
+<td style="text-align: left;">Regex‐parses seat headers, blind posts, bet/raise/call lines, board cards and showdowns, then explodes each hand into “one row per player‐action.”</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>recalc_analytics()</code></td>
+<td style="text-align: left;">after tidying, every time we append or edit rows</td>
+<td style="text-align: left;">Recalculates pot evolution, odds, equity proxies and EV so the data frame is self‐contained.</td>
+</tr>
+</tbody>
+</table>
+<p>{: #tbl:helpers tbl-cap=“Table 2.1: Overview of helper functions in the pipeline.”}</p>
+<section id="full-cleaning-process" class="level3">
+<h3 class="anchored" data-anchor-id="full-cleaning-process">Full Cleaning Process</h3>
+<section id="file-read-in" class="level6">
+<h6 class="anchored" data-anchor-id="file-read-in">1. File Read In</h6>
+<p>Both PokerStars text logs and CSV/Excel files are supported:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>    <span class="co"># a) Excel / CSV</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">#library(readxl)</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">#library(readr)</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">#csv_data  &lt;- read_csv("data/my_data.csv")</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">#xlsx_data &lt;- read_xlsx("data/my_data.xlsx")</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># b) PokerStars text</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">#txt_lines   &lt;- readLines("data/hand_history.txt")</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">#action_tbl  &lt;- get_action_summary(txt_lines)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="header-nomination" class="level6">
+<h6 class="anchored" data-anchor-id="header-nomination">2. Header Nomination</h6>
+<p>Canonicalize column names so downstream joins never breakL</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>    <span class="co">#data &lt;- data %&gt;%</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">#  rename_with(~ "HandNumber", any_of(c("HandNumber", "Hand"))) #%&gt;%</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">#  rename_with(~ "BetAmount",  any_of(c("BetAmount", "Amount")))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="atomic-row-construction" class="level5">
+<h5 class="anchored" data-anchor-id="atomic-row-construction">3. Atomic Row Construction</h5>
+<p>For text logs, our parser emits one tidy row per player-action. Each row already contains:</p>
+<ul>
+<li><strong><code>HandNumber</code></strong>: the unique ID for each hand<br>
+</li>
+<li><strong><code>Player</code></strong>: the player’s name<br>
+</li>
+<li><strong><code>Action</code></strong>: the type of action (e.g.&nbsp;<code>bet</code>, <code>call</code>, <code>raise</code>)<br>
+</li>
+<li><strong><code>BetAmount</code></strong>: how much was wagered<br>
+</li>
+<li><strong><code>StackBefore</code></strong>: stack size immediately before the action<br>
+</li>
+<li><strong><code>Street</code></strong>: the game street (<code>Pre-flop</code>,<code>Flop</code>, <code>Turn</code>,<code>River</code>)</li>
+</ul>
+</section>
+<section id="name-trimming" class="level5">
+<h5 class="anchored" data-anchor-id="name-trimming">4. Name Trimming</h5>
+<p>Clean up player names into valid R identifiers</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>    <span class="co">#players    &lt;- strsplit(input$players, "\n")[[1]] |&gt; trimws()</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">#player_ids &lt;- make.names(players)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="street-ordering" class="level5">
+<h5 class="anchored" data-anchor-id="street-ordering">5. Street Ordering</h5>
+<p>Ensure each row knows its true street order, even if the CSV was shuffled:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#   data &lt;- data %&gt;%</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#     StreetOrder = case_when(</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#       Street == "Pre-flop"        ~ 1L,</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#       str_starts(Street, "Flop")  ~ 2L,</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#       str_starts(Street, "Turn")  ~ 3L,</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#       str_starts(Street, "River") ~ 4L,</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#         TRUE                        ~ 5L</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#        )</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#     )</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="hole-card-splitting" class="level5">
+<h5 class="anchored" data-anchor-id="hole-card-splitting">6. Hole-Card Splitting</h5>
+<p>Combine Hole1 and Hole2 into a single Hole-Card field, and rebuild the board strings:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#   data &lt;- data %&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#     mutate(</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#       HoleCards = ifelse(!is.na(Hole1) &amp; !is.na(Hole2),</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#                          paste(Hole1, Hole2),</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#                          NA_character_),</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#       Flop   = if_else(StreetOrder &gt;= 2, paste0("[", #   paste(Flop1, Flop2, Flop3), "]"), NA_character_),</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#       Turn   = if_else(StreetOrder &gt;= 3, paste0("[", Turn, "]"), NA_character_),</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#       River  = if_else(StreetOrder &gt;= 4, paste0("[", River, "]"), NA_character_)</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#     )</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="integrity-missingvalue-rules" class="level5">
+<h5 class="anchored" data-anchor-id="integrity-missingvalue-rules">7. Integrity &amp; Missing‐Value Rules</h5>
+<p>We enforce two main rules to keep the data sane:</p>
+<ol type="1">
+<li><strong>Impute missing <code>StackAfter</code></strong><br>
+When legacy logs omit <code>StackAfter</code>, compute it from the difference:</li>
+</ol>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#      data &lt;- data %&gt;%</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#        mutate(</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#          StackAfter = coalesce(StackAfter, StackBefore - #   BetAmount)</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#        )</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ol start="2" type="1">
+<li><p><strong>Fix impossible bets</strong><br>
+If someone somehow “bets” more than their stack, we recast it as an all-in call and clamp the amount:</p>
+<ul>
+<li><strong>Action</strong>: change to <code>"all-in call"</code><br>
+</li>
+<li><strong>BetAmount</strong>: set to the full <code>StackBefore</code></li>
+</ul></li>
+</ol>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#      data &lt;- data %&gt;%</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#        mutate(</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#          Action    = if_else(BetAmount &gt; StackBefore, "all-in call", Action),</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#          BetAmount = pmin(BetAmount, StackBefore)</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#        )</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+</section>
+</section>
+<section id="transform" class="level1">
+<h1>Transform</h1>
+<p>After the tidy step every action sits in a long data frame with the raw columns HandNumber, Dealer, Player, Hole Card 1 and 2, Action, BetAmount, StackBefore, Street. The bulk of the transforming uses the function <strong>recalc_analytics</strong> which enriches the table with quantitative features that power every later model and plot.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># recalc_analytics &lt;- function(df) {</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   df %&gt;%</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#     mutate(</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#       HoleCards = paste(Hole1, Hole2),                           # combine symbols</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">#       StreetOrder = case_when(Street == "Pre-flop"       ~ 1L,</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">#                               str_starts(Street, "Flop") ~ 2L,</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">#                               str_starts(Street, "Turn") ~ 3L,</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">#                               str_starts(Street, "River")~ 4L,</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co">#                               TRUE                      ~ 5L)</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">#     ) %&gt;%</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">#     group_by(HandNumber) %&gt;%</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co">#     arrange(HandNumber, StreetOrder) %&gt;%</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co">#     mutate(</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co">#       Contribution = pmin(BetAmount, StackBefore),</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co">#       Pot          = cumsum(Contribution),</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co">#       PotBefore    = lag(Pot, default = 0),</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co">#       Equity       = mapply(approx_equity, HoleCards, Street),</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="co">#       CostToCall   = if_else(Action == "call", BetAmount, NA_real_),</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co">#       PotOdds      = CostToCall / (PotBefore + CostToCall),</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co">#       PrevBet      = lag(if_else(Action %in% c("bet","raise","call"),</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="co">#                                  BetAmount, 0), default = 0),</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co">#       CostOfWager  = case_when(</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="co">#                        Action == "call"  ~ BetAmount,</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="co">#                        Action == "bet"   ~ BetAmount,</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="co">#                        Action == "raise" ~ BetAmount - PrevBet,</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a><span class="co">#                        TRUE              ~ NA_real_),</span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a><span class="co">#       WagerOdds    = CostOfWager / (PotBefore + CostOfWager),</span></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a><span class="co">#       BluffGap     = WagerOdds - Equity,</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a><span class="co">#       RelSize      = if_else(PotBefore &gt; 0, BetAmount / PotBefore, NA_real_),</span></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a><span class="co">#       EV_call  = if_else(Action == "call",</span></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a><span class="co">#                          Equity * (PotBefore + CostToCall) - CostToCall, NA_real_),</span></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a><span class="co">#       EV_bet   = if_else(Action == "bet",</span></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a><span class="co">#                          Equity * (PotBefore + BetAmount) -</span></span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a><span class="co">#                          (1 - Equity) * BetAmount, NA_real_),</span></span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a><span class="co">#       EV_raise = if_else(Action == "raise",</span></span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a><span class="co">#                          Equity * (PotBefore + CostOfWager) -</span></span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a><span class="co">#                          (1 - Equity) * CostOfWager, NA_real_)</span></span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a><span class="co">#     ) %&gt;%</span></span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a><span class="co">#     ungroup() %&gt;%</span></span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a><span class="co">#     select(-Contribution, -Pot, -CostToCall, -PrevBet, -CostOfWager)</span></span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a><span class="co"># }</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 63%">
+<col style="width: 29%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">New column</th>
+<th style="text-align: left;">Formula (chips)</th>
+<th style="text-align: left;">Intuition</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Contribution</strong></td>
+<td style="text-align: left;"><code>pmin(BetAmount, StackBefore)</code></td>
+<td style="text-align: left;">The most a player can <strong>actually</strong> put in this street.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Pot</strong></td>
+<td style="text-align: left;"><code>cumsum(Contribution)</code><br><em>(within each hand)</em></td>
+<td style="text-align: left;">Running pot size after the current action.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>PotBefore</strong></td>
+<td style="text-align: left;"><code>lag(Pot, default = 0)</code></td>
+<td style="text-align: left;">Pot size just before a player acts.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>CostToCall</strong></td>
+<td style="text-align: left;"><code>if_else(Action == "call", BetAmount, NA_real_)</code></td>
+<td style="text-align: left;">Amount needed to continue when facing a bet.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>PotOdds</strong></td>
+<td style="text-align: left;"><code>CostToCall / (PotBefore + CostToCall)</code></td>
+<td style="text-align: left;">Price being laid for a call.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>PrevBet</strong></td>
+<td style="text-align: left;"><code>lag(if_else(Action %in% c("bet","raise","call"), BetAmount, 0), default = 0)</code></td>
+<td style="text-align: left;">Used to isolate the incremental part of a raise.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>CostOfWager</strong></td>
+<td style="text-align: left;"><code>case_when(</code> <br><code>Action == "call"  ~ BetAmount,</code> <br><code>Action == "bet"   ~ BetAmount,</code> <br><code>Action == "raise" ~ BetAmount - PrevBet,</code> <br><code>TRUE              ~ NA_real_)</code></td>
+<td style="text-align: left;">True amount risked (bet, call, or raise – PrevBet).</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>WagerOdds</strong></td>
+<td style="text-align: left;"><code>CostOfWager / (PotBefore + CostOfWager)</code></td>
+<td style="text-align: left;">Price a bettor is offering the table.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>BluffGap</strong></td>
+<td style="text-align: left;"><code>WagerOdds - Equity</code></td>
+<td style="text-align: left;">Margin between price offered and hand strength.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>RelSize</strong></td>
+<td style="text-align: left;"><code>if_else(PotBefore &gt; 0, BetAmount / PotBefore, NA_real_)</code></td>
+<td style="text-align: left;">Bet size expressed as a fraction of the pot.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>EV_call</strong></td>
+<td style="text-align: left;"><code>if_else(Action == "call", Equity * (PotBefore + CostToCall) - CostToCall, NA_real_)</code></td>
+<td style="text-align: left;">Classic expectation of a call.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>EV_bet</strong></td>
+<td style="text-align: left;"><code>if_else(Action == "bet", Equity * (PotBefore + BetAmount) - (1 - Equity) * BetAmount, NA_real_)</code></td>
+<td style="text-align: left;">Expected value of an outright bet.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>EV_raise</strong></td>
+<td style="text-align: left;"><code>if_else(Action == "raise", Equity * (PotBefore + CostOfWager) - (1 - Equity) * CostOfWager, NA_real_)</code></td>
+<td style="text-align: left;">Expected value of a raise.</td>
+</tr>
+</tbody>
+</table>
+<p>{: #tbl:analytics tbl-cap=“Table 3.1: Derived analytics columns with formulas and intuition.”}</p>
+<p>#####Equity Proxy To circumvent the time and processing power used to generate exact Monte-Carlo equity, we use approx_equity(hole, street) which looks up a fast pre-flop table (Chen formula) or a turn/river. This keeps latency &lt; 30 ms per action so the live recorder stays responsive.</p>
+<p>#####Expected Value columns Three mutually exclusive columns (EV_call, EV_bet, EV_raise) are populated so that the EV-trend plot can call coalesce() and get the correct value regardless of action type. A dashed horizontal zero line in that plot lets players see at a glance which decisions gained or bled chips.</p>
+<p><img src="Transformlog.png" id="fig:myplot" class="img-fluid" data-fig-cap="Showcase of Transformed Hand Log" alt="Showcase of Transformed Hand Log"></p>
+</section>
+<section id="modelling" class="level1">
+<h1>Modelling</h1>
+<p>Our modelling layer has two goals: (i) assign every bet or raise a live probability that the actor is bluff-heavy, and (ii) roll all per-player statistics into a single “Optimality” KPI that balances value betting, smart aggression, and controlled bluffing. We lean on the poker-AI literature for both the choice of features and the mathematical footing: Billings’ foundational work on computer-poker evaluation <span class="citation" data-cites="Billings2006">(<a href="#ref-Billings2006" role="doc-biblioref">Billings &amp; al., 2006</a>)</span>, Chen &amp; Ankenman’s equity-versus-price calculus <span class="citation" data-cites="ChenAnkenman2006">(<a href="#ref-ChenAnkenman2006" role="doc-biblioref">Chen &amp; Ankenman, 2006</a>)</span>, Sire’s tournament-flow statistics <span class="citation" data-cites="Sire2007">(<a href="#ref-Sire2007" role="doc-biblioref">Sire, 2007</a>)</span>, Teófilo’s abstraction heuristics <span class="citation" data-cites="Kuznetsov2024">(<a href="#ref-Kuznetsov2024" role="doc-biblioref">Kuznetsov, 2024</a>)</span>, Kang &amp; Shelton’s HMM opponent-modelling insights <span class="citation" data-cites="Kuznetsov2024">(<a href="#ref-Kuznetsov2024" role="doc-biblioref">Kuznetsov, 2024</a>)</span>, and modern variance-reduction techniques (AIVAT <span class="citation" data-cites="Burch2020">(<a href="#ref-Burch2020" role="doc-biblioref">Burch et al., 2020</a>)</span>). The subsections below detail our implementation, show the equations, and justify defaults with citations.</p>
+<p>We need two layers of insight:</p>
+<ul>
+<li>A <strong>Hidden-Markov Model</strong> (HMM) that tags each bet or raise with a live bluff-probability, and<br>
+</li>
+<li>An <strong>Optimality score</strong> that rolls every per-player metric (edge, volume, discipline) into one number.</li>
+</ul>
+<p>Those choices echo classic computer-poker work (Billings, Chen &amp; Ankenman) <span class="citation" data-cites="Billings2006">(<a href="#ref-Billings2006" role="doc-biblioref">Billings &amp; al., 2006</a>)</span> and later real-time opponent-modelling papers (Kang &amp; Shelton). <span class="citation" data-cites="Kuznetsov2024">(<a href="#ref-Kuznetsov2024" role="doc-biblioref">Kuznetsov, 2024</a>)</span></p>
+<section id="hidden-markov-model-is-this-bet-a-bluff" class="level5">
+<h5 class="anchored" data-anchor-id="hidden-markov-model-is-this-bet-a-bluff">Hidden Markov Model, “Is this bet a bluff?”</h5>
+<p>Poker hands arrive as an unlabelled time-series of actions. There are no indicators which determine if a hand is a value bet of a bluff, yet that latent intent drive strategy. A Hidden Markov Model fits that exact scenario</p>
+<p>From the transform stage we carry four statistics: From the transform stage we carry four statistics:</p>
+<p>From the transform stage we carry four statistics:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(E\)</span></td>
+<td style="text-align: left;">equity proxy</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(O\)</span></td>
+<td style="text-align: left;">price offered (<code>WagerOdds</code>)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong><span class="math inline">\(G = O - E\)</span></strong></td>
+<td style="text-align: left;"><strong>Bluff Gap</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(R\)</span></td>
+<td style="text-align: left;">relative bet size</td>
+</tr>
+</tbody>
+</table>
+<p>{: #tbl:transform-stats tbl-cap=“Table 2.1: Four transform‐stage statistics.”}</p>
+</section>
+<section id="two-state-gaussian-hmm" class="level5">
+<h5 class="anchored" data-anchor-id="two-state-gaussian-hmm">Two state Gaussian HMM</h5>
+<p>We model hidden states V (Value) and B (Bluff). Each emits (G, R) with independent normals; parameters and the transition matrix are leaned by Expectation Maximization. It is the simplest model that captures the qualitative switched noted in real time opponent studies <span class="citation" data-cites="Kuznetsov2024">(<a href="#ref-Kuznetsov2024" role="doc-biblioref">Kuznetsov, 2024</a>)</span> . Early experiments with 3 and 4 states over fit the set.</p>
+</section>
+<section id="gaussian-emissions" class="level5">
+<h5 class="anchored" data-anchor-id="gaussian-emissions">Gaussian emissions</h5>
+<p>BluffGap and RelativeBetSize are roughly bell shaped after truncating the tails. A diagonal covariance keeps the parameter count low and EM is stabilized.</p>
+<p>Posterior coding gives:</p>
+<p><span class="math display">\[
+\label{eq:pbluff}
+p_{\mathrm{bluff}} \;=\; P\bigl(S_t = B \mid G_t, R_t\bigr)
+\]</span> If a player shows less than three aggressive actions the model is skipped and the bluff field is left NA to avoid small sample size noise.</p>
+<p>An alternative considered was logistic regression, however the lack of labelled bluffs made this a very difficult feat.</p>
+</section>
+<section id="optimality-score-from-micrometrics-to-one-kpi" class="level5">
+<h5 class="anchored" data-anchor-id="optimality-score-from-micrometrics-to-one-kpi">Optimality Score, from micrometrics to one KPI</h5>
+<p>The Optimality index is designed to answer the single question most asked: “Who is actually playing well once volume and bluff discipline are taken into account?” We start with Chen and Ankenman’s <span class="citation" data-cites="ChenAnkenman2006">(<a href="#ref-ChenAnkenman2006" role="doc-biblioref">Chen &amp; Ankenman, 2006</a>)</span> equity-edge idea in which a call, bet, or raise is worth taking only when</p>
+<p><span class="math display">\[
+\overline{E} \;-\;\overline{O}\;&gt;\;0
+\]</span></p>
+<p>with</p>
+<p><span class="math display">\[
+\overline{E} = \text{mean equity},
+\qquad
+\overline{O} = \text{mean price paid}.
+\]</span></p>
+<p>On its own edge ignores how often a player enters pots and whether that edge is inflated by reckless bluffs. We therefore add two modifiers:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 39%">
+<col style="width: 45%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Modifier</th>
+<th style="text-align: left;">Rationale</th>
+<th style="text-align: left;">Scaling</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\nu = \dfrac{n_{\text{actions}}}{n_{\text{hands}}}\)</span></td>
+<td style="text-align: left;">A player who takes profitable spots more often grows the bankroll faster. Raw counts (<span class="math inline">\(n_{\text{actions}}\)</span>) would unfairly favour marathon sessions, so we normalise by hands played.</td>
+<td style="text-align: left;"><span class="math inline">\(0 \le \nu \le 1\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(B\)</span> (Bluff bonus / penalty)</td>
+<td style="text-align: left;">A controlled share of +EV bluffs raises win-rate; the same share on a negative edge accelerates losses (Billings et al., 2006).</td>
+<td style="text-align: left;"><span class="math display">\[B = \begin{cases}
+1 + \mathrm{BluffRate}, &amp; \text{if Edge} &gt; 0,\\
+1 - \mathrm{BluffRate}, &amp; \text{if Edge} &lt; 0
+\end{cases}\]</span></td>
+</tr>
+</tbody>
+</table>
+<p>{: #tbl:opt-modifiers tbl-cap=“Table 4.1: Modifiers and scaling for the Optimality index.”}</p>
+<p><span class="math display">\[
+\label{eq:opt}
+\mathrm{Opt} \;=\; (\overline{E} - \overline{O}) \times \nu \times B
+\]</span> ##### Variance notes, “Making live EV readings believable”</p>
+<p>Per-action equity is notoriously noise, the river card alone can swing expectation by a fill pot. Following Burch’s <span class="citation" data-cites="AIVAT2020">(<a href="#ref-AIVAT2020" role="doc-biblioref"><strong>AIVAT2020?</strong></a>)</span> AICAT method we can slash variance by primarily focusing on EV over Equity. For each street we replace equity with its conditional expectation given the exposed board. This removes variance that is purely due to future RNG. Lower variance stabilizes both the HMM training and the Optimality ranking, so small hand samples are less prone to lucky “heat-runs.”</p>
+</section>
+<section id="next-steps-in-modelling" class="level5">
+<h5 class="anchored" data-anchor-id="next-steps-in-modelling">Next Steps in Modelling</h5>
+<p>Building our HMM Optimality Framework, the following enhancements will sharpen predictive power and real world relevance.</p>
+<ol type="1">
+<li>Replace the <strong>approx_equity()</strong> lookup with a Monte-Carlo equity simulations to eliminate lookup bias and handle arbitrary board textures.</li>
+<li>Optimality weight calibration Automate the selection of the volume and bluff multipliers via grid-search or Bayesian optimization against a hold-out set of live-session profit traces.</li>
+<li>Compute a Hero Bluff metric in which the model only uses the Hero Player’s hole cards and omits the hole cards of the other players and uses a plausible range of cards for each opponent.</li>
+</ol>
+</section>
+</section>
+<section id="visualizing-and-communication" class="level1">
+<h1>Visualizing and Communication</h1>
+<p>Once every action is enriched with equity, EV, bluff-probability, and stack context, we use 3 key plots to surface patterns at a glance. All code lives in the server file’s <strong>renderplot()</strong> calls.</p>
+<section id="stack-and-plot-volume-area-chart" class="level3">
+<h3 class="anchored" data-anchor-id="stack-and-plot-volume-area-chart">Stack and Plot Volume Area Chart</h3>
+<p>This chart shows how each player’s stack evolves hand-by-hand alongside the total pot size.</p>
+<p><img src="SPV.png" id="fig:myplot" class="img-fluid" data-fig-cap="Showcase of Stack Pot Volume Pot" alt="Showcase of Stack Pot Volume Plot"></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># output$stack_plot &lt;- renderPlot({</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   df &lt;- rv()</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   df_stacks &lt;- df %&gt;% </span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#     group_by(HandNumber, Player) %&gt;% </span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#     arrange(StreetOrder) %&gt;% </span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#     summarise(StackBefore = first(StackBefore), .groups="drop") %&gt;% </span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">#     complete(HandNumber, Player, fill = list(StackBefore=0))</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   df_pot &lt;- df %&gt;% group_by(HandNumber) %&gt;% summarise(PotEnd = sum(coalesce(BetAmount,0)))</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">#   ggplot() +</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">#     geom_area(data=df_pot, aes(HandNumber, PotEnd), fill="skyblue", alpha=0.4) +</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co">#     geom_line(data=df_stacks, aes(HandNumber, StackBefore, color=Player, group=Player), size=1.2) +</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co">#     geom_point(data=df_stacks, aes(HandNumber, StackBefore, color=Player), size=3) +</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co">#     labs(title="Stack &amp; Pot Volume by Hand", x="Hand Number", y="Chips / Pot Volume") +</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="co">#     theme_minimal() +</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co">#     theme(legend.position="bottom",</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="co">#           axis.text.x=element_text(angle=45, hjust=1))</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co"># })</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="aggrssion-bubble-plot" class="level3">
+<h3 class="anchored" data-anchor-id="aggrssion-bubble-plot">Aggrssion Bubble Plot</h3>
+<p>The aggression bubble plot distils each player’s betting profile into a single point using four visual channels:</p>
+<ol type="1">
+<li>Horizontal Axis (x = Average Pot odds) The mean price a player has paid for calls, bets, and raises. Lower values indicate cheaper bets (tighter play) wile higher values signal looser, more speculative actions.</li>
+<li>Vertical axis ( y = Average Equity) The mean hand strength (equity) when they chose to invest. Higher values reveal a focus on value spots whereas lower values suggest frequent “chasing” of draws or marginal holdings.</li>
+<li>Bubble Area (size = # of bets &amp; raises) Encodes aggression volume. Large bubbles show players who bet or raise often, small bubbles mark those who pick their spots more conservatively.</li>
+<li>Colour Gradient (colour = Bluff Rate) A sky blue -&gt; firebrick spectrum highlights how often a player’s actions fall into the bluff state as estimated by the HMM. Blue tones denote disciplined, predominantly value-driven play, red tones flag high bluff propensity.</li>
+</ol>
+<p><img src="ap.png" id="fig:myplot" class="img-fluid" data-fig-cap="Showcase of Agression Bubble Plot" alt="Showcase of Aggression Bubble Plot"></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># player_summary &lt;- reactive({</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#     at &lt;- action_table_hmm()</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#     # if there were no bet/raise actions, return an empty tibble</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">#     if (nrow(at) == 0) {</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">#       return(tibble(</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">#         Player       = character(),</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">#         avg_equity   = double(),</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">#         avg_odds     = double(),</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co">#         avg_EV_raise = double(),</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co">#         bluff_rate   = double(),</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co">#         n_actions    = integer(),</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co">#         n_hands      = integer(),</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co">#         vol_frac     = double()</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="co">#       ))</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="co">#     }</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="co">#     ## 16-1) Aggregate bet/raise metrics per player</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="co">#     raw &lt;- at %&gt;%</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="co">#       group_by(Player) %&gt;%</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="co">#       summarise(</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="co">#         avg_equity   = mean(Equity,     na.rm = TRUE),</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="co">#         avg_odds     = mean(WagerOdds,  na.rm = TRUE),</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="co">#         avg_EV_raise = mean(EV_raise,   na.rm = TRUE),</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a><span class="co">#         bluff_rate   = mean(bluff_prob, na.rm = TRUE),</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a><span class="co">#         n_actions    = n(),</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a><span class="co">#         .groups      = "drop"</span></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a><span class="co">#       )</span></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a><span class="co">#     ## 16-2) How many distinct hands did each player sit in?</span></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a><span class="co">#     hands &lt;- rv() %&gt;%</span></span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a><span class="co">#       distinct(HandNumber, Player) %&gt;%</span></span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a><span class="co">#       count(Player, name = "n_hands")</span></span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a><span class="co">#     ## 16-3) Join &amp; compute volume fraction (aggressive acts per hand)</span></span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a><span class="co">#     raw %&gt;%</span></span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a><span class="co">#       left_join(hands, by = "Player") %&gt;%</span></span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a><span class="co">#       mutate(</span></span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a><span class="co">#         vol_frac = if_else(n_hands &gt; 0, n_actions / n_hands, 0)</span></span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a><span class="co">#       )</span></span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a><span class="co">#   })</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<section id="interpretation-tips" class="level5">
+<h5 class="anchored" data-anchor-id="interpretation-tips">Interpretation Tips</h5>
+<ul>
+<li>The 45° dashed line is the break-even baseline: any bubble above it represents a player whose average equity exceeded average price paid—i.e., +EV play.</li>
+<li>A large blue bubble high and to the left signals a “solid reg” who bets often but primarily in value spots.</li>
+<li>A large red bubble low and to the right reveals a “spewy bluffer” whose aggression outpaces hand quality.</li>
+<li>Clusters often emerge: tight-aggressive (“TAG”) players form a medium-sized, moderately red cluster above the line; tight-passive players hug the lower-left, small-light bubbles; and loose players scatter rightward with varied colours.</li>
+</ul>
+</section>
+<section id="why-this-works" class="level5">
+<h5 class="anchored" data-anchor-id="why-this-works">Why This Works</h5>
+<ul>
+<li>Multidimensional view: condenses four metrics into a single, intuitive chart.</li>
+<li>Immediate outlier detection: extreme bubbles and positioning jump out, guiding coaches where to focus.</li>
+<li>Comparative benchmarking: everyone shares the same axes, making peers comparisons trivial.</li>
+</ul>
+</section>
+</section>
+<section id="ev-scatter-plot" class="level3">
+<h3 class="anchored" data-anchor-id="ev-scatter-plot">EV Scatter Plot</h3>
+<p>For a selected player, we chart per-action EV over time. A zero-EV dashed highlights wins versus losses.</p>
+<section id="key-elements" class="level5">
+<h5 class="anchored" data-anchor-id="key-elements">Key elements</h5>
+<ol type="1">
+<li>Hand Number (x-axis). Chronological order of hands lets you see hot and cold streaks.</li>
+<li>EV per Action (y-axis). Positive value denote “+EV” decisions; negative values indicate chip losing moves</li>
+<li>Colour = Action type. Differentiates Calls, bets, and raises so you can spot which action type carries the most variance.</li>
+</ol>
+<p><img src="pev.png" id="fig:myplot" class="img-fluid" data-fig-cap="Showcase of Player EV Plot" alt="Showcase of Player EV Plot"></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># output$ev_trend &lt;- renderPlot({</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   req(input$focus_player != "Summary")</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   df &lt;- rv() %&gt;%</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#     filter(</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">#       Player == input$focus_player,</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">#       Action %in% c("bet", "call", "raise")</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">#     ) %&gt;%</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">#     mutate(ev_score = coalesce(EV_call, EV_bet, EV_raise))</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co">#   # Symmetric y-axis so gains and losses are directly comparable</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co">#   max_abs &lt;- max(abs(df$ev_score), na.rm = TRUE)</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co">#   ggplot(df, aes(x = HandNumber, y = ev_score, color = Action)) +</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co">#     # Zero-EV baseline</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="co">#     geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="co">#     # Each dot = one aggressive action’s EV</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="co">#     geom_point(size = 4, alpha = 0.8) +</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="co">#     scale_y_continuous(limits = c(-max_abs, max_abs)) +</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="co">#     scale_x_continuous(breaks = unique(df$HandNumber)) +</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="co">#     labs(</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="co">#       title = paste(input$focus_player, "EV per Action Over Hands"),</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="co">#       x     = "Hand Number",</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="co">#       y     = "EV (chips)",</span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="co">#       color = "Action Type"</span></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="co">#     ) +</span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a><span class="co">#     theme_minimal(base_size = 13)</span></span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a><span class="co"># })</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+</section>
+<section id="optimal-table-and-headline-summary" class="level3">
+<h3 class="anchored" data-anchor-id="optimal-table-and-headline-summary">Optimal Table and Headline Summary</h3>
+<p>The Optimality Table ranks each player by their composite “Optimality” score and lays out the three components that feed into it, EV Edge, Bet/Raise Rate and Bluff Rate, so you can pinpoint exactly why one player sits above or below another. By presenting why one player sits above or below another. - EV Edge (= Average Equity – Avg Pot Odds) shows pure decision quality.</p>
+<ul>
+<li>Bet/Raise Rate (= Aggressive Actions/Hands Played) measures how often a player seizes spots.</li>
+<li>Bluff Rate (= Mean HMM Bluff Probability) captures their discipline with inpaired or weak holdings</li>
+<li>Optimality multiplies those three factors into one number, so a high-scoring player must excel on all fronts</li>
+</ul>
+<p>Immediately next to the table, the Headline Summary pulls out the story in two sentences: <img src="or.png" id="fig:myplot" class="img-fluid" data-fig-cap="Showcase of Optimality" alt="Showcase of Optimality"></p>
+<p>This detailed table plus a concise, human read-able paragraph ensures that both data savvy coaches and casual observers instantly grasp who’s excelling, who is leaking chips and which levers each player should pull to improve.</p>
+
+
+
+</section>
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-Billings2006" class="csl-entry" role="listitem">
+Billings, D., &amp; al., et. (2006). Algorithms and assessment in computer poker. <em>AAAI Spring Symposium</em>.
+</div>
+<div id="ref-Burch2020" class="csl-entry" role="listitem">
+Burch, P. et al. (2020). AIVAT: An action‐informed variance reduction method for poker. <em>Transactions on Games</em>.
+</div>
+<div id="ref-ChenAnkenman2006" class="csl-entry" role="listitem">
+Chen, B., &amp; Ankenman, J. (2006). <em>The mathematics of poker</em>. ConJelCo LLC.
+</div>
+<div id="ref-Kuznetsov2024" class="csl-entry" role="listitem">
+Kuznetsov. (2024). Hidden markov models for opponent modelling in poker. <em>Proc. Of Another Conf.</em>
+</div>
+<div id="ref-Sire2007" class="csl-entry" role="listitem">
+Sire, C. (2007). Universal statistical properties of poker tournaments. <em>Journal of Statistical Mechanics</em>.
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

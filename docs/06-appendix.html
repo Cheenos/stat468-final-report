@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Chapter 4: Modelling – STAT 468 Final Project Report</title>
+<title>Appendix – STAT 468 Final Project Report</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,27 +20,7 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-  margin-bottom: 0em;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -50,8 +30,7 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./05-visualize_and_communicate.html" rel="next">
-<link href="./03-transform.html" rel="prev">
+<link href="./05-visualize_and_communicate.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -90,35 +69,6 @@ div.csl-indent {
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -131,7 +81,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-modelling.html"><span class="chapter-title">Chapter 4: Modelling</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./06-appendix.html"><span class="chapter-title">Appendix</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -178,7 +128,7 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./04-modelling.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Chapter 4: Modelling</span></a>
+  <a href="./04-modelling.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Chapter 4: Modelling</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -188,7 +138,7 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./06-appendix.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Appendix</span></a>
+  <a href="./06-appendix.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Appendix</span></a>
   </div>
 </li>
     </ul>
@@ -201,7 +151,10 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#modelling" id="toc-modelling" class="nav-link active" data-scroll-target="#modelling">Modelling</a></li>
+  <li><a href="#appendix" id="toc-appendix" class="nav-link active" data-scroll-target="#appendix">Appendix</a>
+  <ul class="collapse">
+  <li><a href="#ai-usage" id="toc-ai-usage" class="nav-link" data-scroll-target="#ai-usage">AI Usage</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -210,7 +163,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-title">Chapter 4: Modelling</span></h1>
+<h1 class="title"><span class="chapter-title">Appendix</span></h1>
 </div>
 
 
@@ -227,133 +180,13 @@ window.Quarto = {
 </header>
 
 
-<section id="modelling" class="level1">
-<h1>Modelling</h1>
-<p>Our modelling layer has two goals: (i) assign every bet or raise a live probability that the actor is bluff‑heavy, and (ii) roll per‑player statistics into a single “Optimality” KPI that balances value betting, smart aggression, and controlled bluffing. We lean on the poker‑AI literature for both feature choices and mathematical footing: Billings’ work on computer‑poker evaluation <span class="citation" data-cites="Billings2006">(<a href="#ref-Billings2006" role="doc-biblioref">Billings &amp; al., 2006</a>)</span>, Chen &amp; Ankenman’s equity‑versus‑price calculus <span class="citation" data-cites="ChenAnkenman2006">(<a href="#ref-ChenAnkenman2006" role="doc-biblioref">Chen &amp; Ankenman, 2006</a>)</span>, Sire’s tournament‑flow statistics <span class="citation" data-cites="Sire2007">(<a href="#ref-Sire2007" role="doc-biblioref">Sire, 2007</a>)</span>, Teófilo’s abstraction heuristics <span class="citation" data-cites="Kuznetsov2024">(<a href="#ref-Kuznetsov2024" role="doc-biblioref">Kuznetsov, 2024</a>)</span>, Kang &amp; Shelton’s HMM opponent‑modelling insights <span class="citation" data-cites="Kuznetsov2024">(<a href="#ref-Kuznetsov2024" role="doc-biblioref">Kuznetsov, 2024</a>)</span>, and modern variance‑reduction techniques (AIVAT <span class="citation" data-cites="Burch2020">(<a href="#ref-Burch2020" role="doc-biblioref">Burch et al., 2020</a>)</span>). The subsections below detail our implementation, show the equations, and justify defaults with citations.</p>
-<p>We need two layers of insight:</p>
-<ul>
-<li>A <strong>Hidden Markov Model (HMM)</strong> that tags each bet or raise with a live bluff probability, and<br>
-</li>
-<li>An <strong>Optimality score</strong> that aggregates edge, volume, and discipline into one number.</li>
-</ul>
-<p>These choices echo classic computer‑poker work (Billings; Chen &amp; Ankenman) <span class="citation" data-cites="Billings2006 ChenAnkenman2006">(<a href="#ref-Billings2006" role="doc-biblioref">Billings &amp; al., 2006</a>; <a href="#ref-ChenAnkenman2006" role="doc-biblioref">Chen &amp; Ankenman, 2006</a>)</span> and later real‑time opponent‑modelling papers (Kang &amp; Shelton) <span class="citation" data-cites="Kuznetsov2024">(<a href="#ref-Kuznetsov2024" role="doc-biblioref">Kuznetsov, 2024</a>)</span>.</p>
-<section id="hidden-markov-model-is-this-bet-a-bluff" class="level5">
-<h5 class="anchored" data-anchor-id="hidden-markov-model-is-this-bet-a-bluff">Hidden Markov Model: “Is this bet a bluff?”</h5>
-<p>Poker hands arrive as an unlabelled time series of actions. We do not directly observe whether a wager is value or bluff, yet that latent intent drives strategy. A Hidden Markov Model fits this setting.</p>
-<p>From the transform stage we carry four statistics:</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th style="text-align: left;">Symbol</th>
-<th style="text-align: left;">Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><span class="math inline">\(E\)</span></td>
-<td style="text-align: left;">equity proxy</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><span class="math inline">\(O\)</span></td>
-<td style="text-align: left;">price offered (<code>WagerOdds</code>)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><span class="math inline">\(G = O - E\)</span></td>
-<td style="text-align: left;"><strong>Bluff Gap</strong></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><span class="math inline">\(R\)</span></td>
-<td style="text-align: left;">relative bet size</td>
-</tr>
-</tbody>
-</table>
-<p>{: #tbl:transform-stats tbl-cap=“Table 2.1: Four transform‑stage statistics.”}</p>
-</section>
-<section id="twostate-gaussian-hmm" class="level5">
-<h5 class="anchored" data-anchor-id="twostate-gaussian-hmm">Two‑state Gaussian HMM</h5>
-<p>We model hidden states <strong>V</strong> (Value) and <strong>B</strong> (Bluff). Each emits <span class="math inline">\((G, R)\)</span> with independent normals; parameters and the transition matrix are <strong>learned via Expectation–Maximization</strong>. This is the simplest model that captures the qualitative <strong>switches</strong> noted in real‑time opponent studies <span class="citation" data-cites="Kuznetsov2024">(<a href="#ref-Kuznetsov2024" role="doc-biblioref">Kuznetsov, 2024</a>)</span>. Early experiments with 3–4 states overfit.</p>
-</section>
-<section id="gaussian-emissions" class="level5">
-<h5 class="anchored" data-anchor-id="gaussian-emissions">Gaussian emissions</h5>
-<p><code>BluffGap</code> and <code>RelativeBetSize</code> are roughly bell‑shaped after truncating tails. A diagonal covariance keeps the parameter count low and stabilizes EM.</p>
-<p>Posterior coding gives</p>
-<p><span id="eq-pbluff"><span class="math display">\[
-p_{\mathrm{bluff}} := P\!\bigl(S_t = B \mid G_t, R_t\bigr)
-\tag{6.1}\]</span></span></p>
-<p>If a player has <strong>fewer than three aggressive actions</strong>, we skip the model and leave the bluff field <code>NA</code> to avoid small‑sample noise.</p>
-<p>We also considered logistic regression; the absence of labelled bluffs makes it impractical here.</p>
-</section>
-<section id="optimality-score-from-micrometrics-to-one-kpi" class="level5">
-<h5 class="anchored" data-anchor-id="optimality-score-from-micrometrics-to-one-kpi">Optimality score: from micro‑metrics to one KPI</h5>
-<p>The Optimality index answers: <em>Who is actually playing well once volume and bluff discipline are considered?</em> Starting from Chen &amp; Ankenman’s edge idea—take a call/bet/raise only when <span class="math display">\[
-\overline{E} - \overline{O} &gt; 0,
-\]</span> with <span class="math display">\[
-\overline{E} = \text{mean equity}, \qquad \overline{O} = \text{mean price paid},
-\]</span> we add two modifiers:</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 23%">
-<col style="width: 52%">
-<col style="width: 23%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Modifier</th>
-<th style="text-align: left;">Rationale</th>
-<th style="text-align: left;">Scaling</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><span class="math inline">\(\nu = \dfrac{n_{\text{actions}}}{n_{\text{hands}}}\)</span></td>
-<td style="text-align: left;">Profitable spots taken more often grow the bankroll faster; normalising by hands avoids favouring marathon sessions.</td>
-<td style="text-align: left;"><span class="math inline">\(0 \le \nu \le 1\)</span></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><span class="math inline">\(B\)</span> (bluff bonus/penalty)</td>
-<td style="text-align: left;">A controlled share of +EV bluffs raises win rate; the same share with negative edge accelerates losses (Billings et al., 2006).</td>
-<td style="text-align: left;"><span class="math inline">\(B=\begin{cases}1+\mathrm{BluffRate}, &amp; \text{if Edge}&gt;0\\[2pt] 1-\mathrm{BluffRate}, &amp; \text{if Edge}&lt;0\end{cases}\)</span></td>
-</tr>
-</tbody>
-</table>
-<p>{: #tbl:opt-modifiers tbl-cap=“Table 4.1: Modifiers and scaling for the Optimality index.”}</p>
-<p>The final score is</p>
-<p><span id="eq-opt"><span class="math display">\[
-\mathrm{Opt} = (\overline{E} - \overline{O}) \times \nu \times B
-\tag{6.2}\]</span></span></p>
-</section>
-<section id="variance-notes-making-live-ev-readings-believable" class="level5">
-<h5 class="anchored" data-anchor-id="variance-notes-making-live-ev-readings-believable">Variance notes: “Making live EV readings believable”</h5>
-<p>Per‑action equity is notoriously noisy—river cards alone can swing expectation by a <strong>full</strong> pot. Following variance‑reduction ideas (e.g., AIVAT) <span class="citation" data-cites="Burch2020">(<a href="#ref-Burch2020" role="doc-biblioref">Burch et al., 2020</a>)</span>, we focus on <strong>EV</strong> rather than raw equity and, per street, use conditional expectations given the exposed board. Lower variance stabilizes both the HMM training and the Optimality ranking, making small‑hand samples less prone to lucky heat‑runs.</p>
-</section>
-<section id="next-steps-in-modelling" class="level5">
-<h5 class="anchored" data-anchor-id="next-steps-in-modelling">Next steps in modelling</h5>
-<ol type="1">
-<li>Replace <code>approx_equity()</code> with Monte‑Carlo equity simulation to remove lookup bias and handle arbitrary textures.<br>
-</li>
-<li>Tune the volume and bluff multipliers via grid search or Bayesian optimisation against a hold‑out of live profit traces.<br>
-</li>
-<li>Add a <strong>Hero‑only</strong> bluff metric that conditions on Hero’s hole cards and opponent ranges (no opponent hole‑card peeks).</li>
-</ol>
+<section id="appendix" class="level1">
+<h1>Appendix</h1>
+<section id="ai-usage" class="level2">
+<h2 class="anchored" data-anchor-id="ai-usage">AI Usage</h2>
+<p><code>I used ChatGPT to debug my entire workflow [@chatgpt_log1; @chatgpt_log2; @chatgpt_log3, @chatgpt_log4, @chatgpt_log5, @chatgpt_log6, @chatgpt_log7].</code></p>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
-<div id="ref-Billings2006" class="csl-entry" role="listitem">
-Billings, D., &amp; al., et. (2006). Algorithms and assessment in computer poker. <em>AAAI Spring Symposium</em>.
-</div>
-<div id="ref-Burch2020" class="csl-entry" role="listitem">
-Burch, P. et al. (2020). AIVAT: An action‐informed variance reduction method for poker. <em>Transactions on Games</em>.
-</div>
-<div id="ref-ChenAnkenman2006" class="csl-entry" role="listitem">
-Chen, B., &amp; Ankenman, J. (2006). <em>The mathematics of poker</em>. ConJelCo LLC.
-</div>
-<div id="ref-Kuznetsov2024" class="csl-entry" role="listitem">
-Kuznetsov. (2024). Hidden markov models for opponent modelling in poker. <em>Proc. Of Another Conf.</em>
-</div>
-<div id="ref-Sire2007" class="csl-entry" role="listitem">
-Sire, C. (2007). Universal statistical properties of poker tournaments. <em>Journal of Statistical Mechanics</em>.
-</div>
-</div>
 </section>
 </section>
 
@@ -759,14 +592,11 @@ Sire, C. (2007). Universal statistical properties of poker tournaments. <em>Jour
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./03-transform.html" class="pagination-link" aria-label="Chapter 3: Transform">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Chapter 3: Transform</span></span>
+      <a href="./05-visualize_and_communicate.html" class="pagination-link" aria-label="Chapter 5: Visualize and Communicate">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Chapter 5: Visualize and Communicate</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./05-visualize_and_communicate.html" class="pagination-link" aria-label="Chapter 5: Visualize and Communicate">
-        <span class="nav-page-text"><span class="chapter-title">Chapter 5: Visualize and Communicate</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->
