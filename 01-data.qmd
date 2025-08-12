@@ -1,0 +1,78 @@
+---
+title: "Chapter 1: Data"
+author: "Eddy Ji"
+format: html
+editor: visual
+execute:
+  freeze: auto
+---
+
+## Data Collection and Generation  {#Data}
+
+The project runs on two deliberately different data sets so the pipeline would face both idealized input and real-world chaos.
+
+------------------------------------------------------------------------
+
+## Synthetic PokerStars Log
+
+To battle-test the parser before incorporating real gameplay, I used GPT-o4 to auto-generate 10 independent hands in native PokerStars `.txt` syntax (6-max no-limit hold'em).\
+Prompts randomized seat changes, blind levels, raise amounts, and street length, forcing every branch of regex to be used.
+
+Although the AI log sometimes produced poker-illogical outcomes, it allowed me to stress-test parsing on a large sample and make the code more robust, showcasing the ability to parse text logs conveniently.
+
+### Example Hand
+
+```{text}
+PokerStars Hand #1000000001: Tournament #1234567890, $5+$0.50 NL Hold'em – Level 1 (25/50) – 2025/07/14 12:00:00 ET Table '1234567890 1' 6-max Seat #1 is the button Seat 1: "AceHunter" (1500) Seat 2: "BluffMaster" (1500) Seat 3: "RiverRat" (1500) Seat 4: "FlopQueen" (1500) Seat 5: "StackKing" (1500) Seat 6: "TiltLord" (1500) BLINDS 25/50
+
+— Hand 1 —
+
+Hole Cards: - AceHunter [Kd Jh] - BluffMaster [7s 7d] - RiverRat [Ad 5c] - FlopQueen [Qs Ts] - StackKing [4h 4s] - TiltLord [Kh Qd]
+
+Pre-flop:TiltLord posts SB 25, AceHunter posts BB 50.BluffMaster (UTG) raises to 150; RiverRat calls 150; FlopQueen calls 150; StackKing folds; TiltLord folds; AceHunter calls 100.Pot: 600
+
+Flop [Jc 6h 2s]:AceHunter checks; BluffMaster bets 300; RiverRat calls 300; FlopQueen calls 300; AceHunter folds.Pot: 1500
+
+Turn [Tc]:BluffMaster bets 600; RiverRat folds; FlopQueen raises to 1800 all-in; BluffMaster calls 1200.River [3d]
+```
+
+## Live Two-Hour Session
+
+Once the bare-bones of the Shiny poker recorder was stable, I enlisted 7 friends from the UWPSC (University of Waterloo Poker Studies Club) to play a home game for over two hours.\
+Every hole card, post, bet, call, raise, check, and fold was entered with the app, producing over 20 hands each with their own action rows.
+
+Because stacks, board cards, and button positions were captured live, it showcased the intensive data that each hand produces.\
+It also highlighted some quality-of-life improvements that could improve the efficiency of collecting live data.
+
+Together, the AI-generated file proved the pipeline's structural robustness, while the home-game capture supplied the noisy, real-life data on which all subsequent equity, EV, and bluff-probability analyses in this report are based.
+
+## Input Formats Supported
+
+The recorder is intentionally narrow-scoped. It ingests only three data shapes, which are built into the same default column template the app itself exports:
+
+1.  **Live clicks** entered in the Shiny UI, which naturally conform to that template.
+
+2.  **PokerStars hand-history `.txt` files** that follow the site's standard syntax; the parser rewrites them into the template but will reject logs from other rooms (GG, ACR, Winamax) or mixed-game formats.
+
+3.  **Spreadsheets** previously exported by this app---either `.csv` or `.xlsx`---because they already match the template's column names (`HandNumber`, `Player`, `Action`, `BetAmount`, `StackBefore`, etc.).
+
+```{r}
+#| label: poker-log
+#| tbl-cap: "Poker Log — Hand 1"
+#| echo: false
+#| warning: false
+
+library(readxl)
+library(DT)
+
+df <- read_excel("C:/Users/eddy2/OneDrive/Documents/Stat 468/Final Project/PokerDta/poker_log-Hand1.xlsx")
+
+datatable(
+  df,
+  options = list(pageLength = 15, scrollX = TRUE, deferRender = TRUE),
+  filter = "top",
+  rownames = FALSE
+)
+```
+
+The actions are stored in this format, which can be re-uploaded into the app.

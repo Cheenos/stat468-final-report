@@ -1,0 +1,328 @@
+---
+title: "Chapter 5: Visualize and Communicate"
+format: html
+editor: visual
+---
+
+# Visualizing and Communication {#V&C}
+
+Once every action is enriched with equity, EV, bluff-probability, and stack context, we use 3 key plots to surface patterns at a glance. All code lives in the server file's **renderplot()** calls.
+
+### Stack and Plot Volume Area Chart
+
+This chart shows how each player's stack evolves hand-by-hand alongside the total pot size.
+
+```{r}
+# ===============================
+# Libraries
+# ===============================
+library(dplyr)
+library(tidyr)
+library(readxl)
+library(ggplot2)
+
+# ===============================
+# Load Data
+# ===============================
+data_path <- "C:/Users/eddy2/OneDrive/Documents/Stat 468/Final Project/PokerDta/poker_log-Hand1.xlsx" 
+raw_df <- read_excel(data_path)
+
+# ===============================
+# Helper: Equity Approximation
+# ===============================
+approx_equity <- function(hole, street) {
+  if (is.na(hole)) return(NA_real_)
+  ranks <- unlist(strsplit(gsub("[^A2-9TJQK ]", "", hole), " "))
+  score <- function(r) switch(substr(r,1,1),
+                              "A"=14, "K"=13, "Q"=12, "J"=11, "T"=10,
+                              "9"=9, "8"=8, "7"=7, "6"=6, "5"=5,
+                              "4"=4, "3"=3, "2"=2, 5)
+  base <- (sum(vapply(ranks, score, 1)) - 4) / 24
+  bump <- if (street == "Pre-flop") 0
+          else if (startsWith(street,"Flop")) 0.05
+          else if (startsWith(street,"Turn")) 0.07
+          else if (startsWith(street,"River")) 0.09
+          else 0
+  pmin(pmax(base + bump, 0.05), 0.95)
+}
+
+# ===============================
+# Analytics Calculation Function
+# ===============================
+recalc_analytics <- function(df) {
+  df %>%
+    mutate(
+      HoleCards = paste(Hole1, Hole2),
+      StreetOrder = case_when(
+        Street == "Pre-flop"        ~ 1L,
+        grepl("^Flop", Street)      ~ 2L,
+        grepl("^Turn", Street)      ~ 3L,
+        grepl("^River", Street)     ~ 4L,
+        TRUE                        ~ 5L
+      )
+    ) %>%
+    group_by(HandNumber) %>%
+    arrange(HandNumber, StreetOrder, .by_group = TRUE) %>%
+    mutate(
+      Contribution = pmin(BetAmount, StackBefore),
+      Pot          = cumsum(Contribution),
+      PotBefore    = lag(Pot, default = 0),
+      Equity       = mapply(approx_equity, HoleCards, Street),
+
+      CostToCall   = if_else(Action == "call", BetAmount, NA_real_),
+      PotOdds      = CostToCall / (PotBefore + CostToCall),
+
+      PrevBet      = lag(if_else(Action %in% c("bet","raise","call"), BetAmount, 0), default = 0),
+      CostOfWager  = case_when(
+        Action == "call"  ~ BetAmount,
+        Action == "bet"   ~ BetAmount,
+        Action == "raise" ~ BetAmount - PrevBet,
+        TRUE              ~ NA_real_
+      ),
+      WagerOdds    = CostOfWager / (PotBefore + CostOfWager),
+
+      BluffGap     = WagerOdds - Equity,
+      RelSize      = if_else(PotBefore > 0, BetAmount / PotBefore, NA_real_),
+
+      EV_call  = if_else(Action == "call",
+                         Equity * (PotBefore + CostToCall) - CostToCall, NA_real_),
+      EV_bet   = if_else(Action == "bet",
+                         Equity * (PotBefore + BetAmount) - (1 - Equity) * BetAmount, NA_real_),
+      EV_raise = if_else(Action == "raise",
+                         Equity * (PotBefore + CostOfWager) - (1 - Equity) * CostOfWager, NA_real_)
+    ) %>%
+    ungroup() %>%
+    select(-Contribution, -Pot, -CostToCall, -PrevBet, -CostOfWager)
+}
+
+# ===============================
+# Transform Data
+# ===============================
+df <- recalc_analytics(raw_df)
+
+# ===============================
+# Prepare Stack & Pot Volume Data
+# ===============================
+stack_data <- df %>%
+  group_by(HandNumber, Player) %>%
+  summarise(Stack = last(StackBefore), .groups = "drop")
+
+pot_data <- df %>%
+  group_by(HandNumber) %>%
+  summarise(PotVolume = max(PotBefore, na.rm = TRUE), .groups = "drop")
+
+# ===============================
+# Plot
+# ===============================
+ggplot() +
+  geom_area(data = pot_data,
+            aes(x = HandNumber, y = PotVolume, fill = "Pot Volume"),
+            alpha = 0.2) +
+  geom_line(data = stack_data,
+            aes(x = HandNumber, y = Stack, color = Player),
+            size = 1) +
+  labs(
+    title = "Stack & Pot Volume by Hand",
+    x = "Hand Number",
+    y = "Chips / Pot Volume",
+    fill = NULL
+  ) +
+  theme_minimal()
+```
+
+### Aggression Bubble Plot
+
+The aggression bubble plot distils each player's betting profile into a single point using four visual channels:
+
+1.  Horizontal Axis (x = Average Pot odds) The mean price a player has paid for calls, bets, and raises. Lower values indicate cheaper bets (tighter play) wile higher values signal looser, more speculative actions.
+2.  Vertical axis ( y = Average Equity) The mean hand strength (equity) when they chose to invest. Higher values reveal a focus on value spots whereas lower values suggest frequent "chasing" of draws or marginal holdings.
+3.  Bubble Area (size = \# of bets & raises) Encodes aggression volume. Large bubbles show players who bet or raise often, small bubbles mark those who pick their spots more conservatively.
+4.  Colour Gradient (colour = Bluff Rate) A sky blue -\> firebrick spectrum highlights how often a player's actions fall into the bluff state as estimated by the HMM. Blue tones denote disciplined, predominantly value-driven play, red tones flag high bluff propensity.
+
+![](ap.png){fig-alt="Showcase of Aggression Bubble Plot" fig-cap="Showcase of Agression Bubble Plot"}
+
+```{r}
+library(dplyr)
+library(readxl)
+library(ggplot2)
+library(scales)
+library(stringr)
+
+# ====== 1. Load raw data from Excel ======
+df <- read_excel("C:/Users/eddy2/OneDrive/Documents/Stat 468/Final Project/PokerDta/poker_log-Hand1.xlsx")
+
+# ====== 2. approx_equity helper ======
+approx_equity <- function(hole, street) {
+  if (is.na(hole)) return(NA_real_)
+  ranks <- unlist(strsplit(gsub("[^A2-9TJQK ]","", hole), " "))
+  score <- function(r) switch(substr(r,1,1),
+    "A"=14,"K"=13,"Q"=12,"J"=11,"T"=10,"9"=9,"8"=8,"7"=7,
+    "6"=6,"5"=5,"4"=4,"3"=3,"2"=2, 5)
+  base <- (sum(vapply(ranks, score, 1)) - 4) / 24
+  bump <- if (street == "Pre-flop") 0 else if (startsWith(street,"Flop")) 0.05
+          else if (startsWith(street,"Turn")) 0.07 else if (startsWith(street,"River")) 0.09 else 0
+  pmin(pmax(base + bump, 0.05), 0.95)
+}
+
+# ====== 3. recalc_analytics ======
+recalc_analytics <- function(df) {
+  df %>%
+    mutate(
+      HoleCards = paste(Hole1, Hole2),
+      StreetOrder = case_when(
+        Street == "Pre-flop"        ~ 1L,
+        str_starts(Street, "Flop")  ~ 2L,
+        str_starts(Street, "Turn")  ~ 3L,
+        str_starts(Street, "River") ~ 4L,
+        TRUE                        ~ 5L
+      )
+    ) %>%
+    group_by(HandNumber) %>%
+    arrange(HandNumber, StreetOrder, .by_group = TRUE) %>%
+    mutate(
+      Contribution = pmin(BetAmount, StackBefore),
+      Pot          = cumsum(Contribution),
+      PotBefore    = lag(Pot, default = 0),
+      Equity       = mapply(approx_equity, HoleCards, Street),
+      CostToCall   = if_else(Action == "call", BetAmount, NA_real_),
+      PotOdds      = CostToCall / (PotBefore + CostToCall),
+      PrevBet      = lag(if_else(Action %in% c("bet","raise","call"), BetAmount, 0), default = 0),
+      CostOfWager  = case_when(
+        Action == "call"  ~ BetAmount,
+        Action == "bet"   ~ BetAmount,
+        Action == "raise" ~ BetAmount - PrevBet,
+        TRUE              ~ NA_real_
+      ),
+      WagerOdds    = CostOfWager / (PotBefore + CostOfWager),
+      BluffGap     = WagerOdds - Equity
+    ) %>%
+    ungroup()
+}
+
+# ====== 4. action_table_hmm ======
+action_table_hmm <- function() {
+  recalc_analytics(df) %>%
+    filter(Action %in% c("bet","raise"))
+}
+
+# ====== 5. player_summary (no EV_raise now) ======
+player_summary <- function() {
+  at <- action_table_hmm()
+
+  if (nrow(at) == 0) {
+    return(tibble::tribble(
+      ~Player,    ~avg_equity, ~avg_odds, ~bluff_rate, ~n_actions, ~n_hands, ~vol_frac,
+      "Arshiya",   0.55,       0.25,      0.20,        15,         8,        0.12,
+      "Josh",      0.60,       0.10,      0.05,        10,         6,        0.10,
+      "Michael",   0.50,       0.20,      0.10,        12,         7,        0.15,
+      "Ya'ur",     0.48,       0.18,      0.12,        14,         8,        0.13,
+      "Harris",    0.65,       0.40,      0.30,        20,         9,        0.20,
+      "Max",       0.58,       0.12,      0.08,        11,         7,        0.11,
+      "Vyom",      0.52,       0.15,      0.09,        13,         8,        0.14
+    ))
+  }
+
+  at %>%
+    filter(Action %in% c("bet", "raise")) %>%
+    group_by(Player) %>%
+    summarise(
+      avg_equity    = mean(Equity, na.rm = TRUE),
+      avg_odds      = mean(PotOdds, na.rm = TRUE),
+      bluff_rate    = mean(BluffGap > 0, na.rm = TRUE),
+      n_actions     = n(),
+      n_hands       = n_distinct(HandNumber),
+      vol_frac      = sum(BetAmount, na.rm = TRUE) / sum(StackBefore, na.rm = TRUE),
+      .groups = "drop"
+    )
+}
+
+# ====== 6. Plot ======
+ps <- player_summary()
+
+ggplot(ps, aes(x = avg_odds, y = avg_equity)) +
+  geom_point(aes(size = n_actions, colour = bluff_rate), alpha = 0.6) +
+  geom_text(aes(label = Player), vjust = -1) +
+  scale_size(range = c(3, 10)) +
+  scale_colour_gradient(low = "blue", high = "red") +
+  labs(
+    title = "Player Aggression Profile",
+    x = "Avg. Pot Odds",
+    y = "Avg. Equity",
+    size = "# Bets & Raises",
+    colour = "Bluff Rate"
+  ) +
+  theme_minimal()
+
+
+
+```
+
+##### Interpretation Tips
+
+-   The 45° dashed line is the break-even baseline: any bubble above it represents a player whose average equity exceeded average price paid---i.e., +EV play.
+-   A large blue bubble high and to the left signals a "solid reg" who bets often but primarily in value spots.
+-   A large red bubble low and to the right reveals a "spewy bluffer" whose aggression outpaces hand quality.
+-   Clusters often emerge: tight-aggressive ("TAG") players form a medium-sized, moderately red cluster above the line; tight-passive players hug the lower-left, small-light bubbles; and loose players scatter rightward with varied colours.
+
+##### Why This Works
+
+-   Multidimensional view: condenses four metrics into a single, intuitive chart.
+-   Immediate outlier detection: extreme bubbles and positioning jump out, guiding coaches where to focus.
+-   Comparative benchmarking: everyone shares the same axes, making peers comparisons trivial.
+
+### EV Scatter Plot
+
+For a selected player, we chart per-action EV over time. A zero-EV dashed highlights wins versus losses.
+
+##### Key elements
+
+1.  Hand Number (x-axis). Chronological order of hands lets you see hot and cold streaks.
+2.  EV per Action (y-axis). Positive value denote "+EV" decisions; negative values indicate chip losing moves
+3.  Colour = Action type. Differentiates Calls, bets, and raises so you can spot which action type carries the most variance.
+
+![](pev.png){fig-alt="Showcase of Player EV Plot" fig-cap="Showcase of Player EV Plot"}
+
+```{r, eval = FALSE}
+
+  # 21) ── EV-TREND PLOT FOR A SINGLE PLAYER 
+  output$ev_trend <- renderPlot({
+    req(rv(), input$focus_player != "Summary")
+    
+    df <- rv() %>%
+      filter(
+        Player == input$focus_player,
+        Action %in% c("bet", "call", "raise")    # ← only keep the EV‐bearing actions
+      ) %>%
+      mutate(ev_score = coalesce(EV_call, EV_bet, EV_raise))
+    
+    max_abs <- max(abs(df$ev_score), na.rm = TRUE)
+    
+    ggplot(df, aes(x = HandNumber, y = ev_score, color = Action)) +
+      geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
+      geom_point(size = 5, alpha = 0.8) +
+      scale_x_continuous(breaks = unique(df$HandNumber)) +
+      scale_y_continuous(limits = c(-max_abs, max_abs)) +
+      labs(
+        title = paste(input$focus_player, "EV over Hands"),
+        x     = "Hand Number",
+        y     = "EV (per action)",
+        color = "Action"
+      ) +
+      theme_minimal(base_size = 14)
+  })
+      
+```
+
+### Optimal Table and Headline Summary
+
+The Optimality Table ranks each player by their composite "Optimality" score and lays out the three components that feed into it, EV Edge, Bet/Raise Rate and Bluff Rate, so you can pinpoint exactly why one player sits above or below another. By presenting why one player sits above or below another. - EV Edge (= Average Equity -- Avg Pot Odds) shows pure decision quality.
+
+-   Bet/Raise Rate (= Aggressive Actions/Hands Played) measures how often a player seizes spots.
+-   Bluff Rate (= Mean HMM Bluff Probability) captures their discipline with inpaired or weak holdings
+-   Optimality multiplies those three factors into one number, so a high-scoring player must excel on all fronts
+
+Immediately next to the table, the Headline Summary pulls out the story in two sentences:
+
+![](or.png){fig-alt="Showcase of Optimality" fig-cap="Showcase of Optimality"}
+
+This detailed table plus a concise, human read-able paragraph ensures that both data savvy coaches and casual observers instantly grasp who's excelling, who is leaking chips and which levers each player should pull to improve.

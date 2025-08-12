@@ -1,0 +1,164 @@
+---
+title: "Chapter 2: Tidy"
+format: html
+editor: visual
+execute:
+  freeze: auto
+  warning: false
+---
+
+## Tidy {#Tidy}
+
+The tidying layer is almost entirely code-driven and lives inside 2 helpers within the file.
+
+| Helper                 | Where it fires                                   | What it does                                                                                                                                       |
+|:-----------------|:-----------------|:------------------------------------|
+| `get_action_summary()` | when a `.txt` PokerStars log is uploaded         | Regex‐parses seat headers, blind posts, bet/raise/call lines, board cards and showdowns, then explodes each hand into "one row per player‐action." |
+| `recalc_analytics()`   | after tidying, every time we append or edit rows | Recalculates pot evolution, odds, equity proxies and EV so the data frame is self‐contained.                                                       |
+
+{: #tbl:helpers tbl-cap="Table 2.1: Overview of helper functions in the pipeline."}
+
+### Full Cleaning Process
+
+##### 1. File Read In
+
+Both PokerStars text logs and CSV/Excel files are supported:
+
+```{r}
+#| eval: false
+#a) Excel / CSV
+  library(readxl)
+  library(readr)
+
+  csv_data  <- read_csv("data/my_data.csv")
+  xlsx_data <- read_xlsx("data/my_data.xlsx")
+  
+#b) PokerStars text
+  txt_lines   <- readLines("data/hand_history.txt")
+  action_tbl  <- get_action_summary(txt_lines)
+```
+
+##### 2. Header Nomination
+
+Column names are canonized to avoid breaking downstream functions.
+
+##### 3. Atomic Row Construction
+
+For text logs, our parser emits one tidy row per player-action. Each row already contains:
+
+-   **`HandNumber`**: the unique ID for each hand\
+-   **`Player`**: the player's name\
+-   **`Action`**: the type of action (e.g. `bet`, `call`, `raise`)\
+-   **`BetAmount`**: how much was wagered\
+-   **`StackBefore`**: stack size immediately before the action\
+-   **`Street`**: the game street (`Pre-flop`,`Flop`, `Turn`,`River`)
+
+##### 4. Name Trimming
+
+Clean up player names into valid R identifiers
+
+```{r}
+input <- list(players = "  Vy om  \nMax*   \n  2Arshiya\n Yaj ur\n   H@rris\nJo sh \nMi chael  ")
+
+players    <- strsplit(input$players, "\n")[[1]] |> trimws()
+player_ids <- make.names(players)
+```
+
+##### 5. Street Ordering
+
+Ensure each row knows its true street order, even if the CSV was shuffled:
+
+```{r}
+library(dplyr)
+library(stringr)
+
+data <- data.frame(
+  Street = c(
+    "Pre-flop",
+    "Flop: is Ah Kd 7c",         # Ace hearts, King diamonds, 7 clubs
+    "River: Ah Kd 7c 3s Qh",  # Adds river card
+    "Flop is 9h 9s 2d",         # Paired board
+    "Turn: is Ah Kd 7c 3s",      # Adds turn card
+    "Showdown"                  # Unmatched, will hit TRUE branch
+  )
+)
+
+data <- data %>%
+  mutate(
+    StreetOrder = case_when(
+      Street == "Pre-flop"        ~ 1L,
+      str_starts(Street, "Flop")  ~ 2L,
+      str_starts(Street, "Turn")  ~ 3L,
+      str_starts(Street, "River") ~ 4L,
+      TRUE                        ~ 5L
+    )
+  )
+
+data
+
+```
+
+##### 6. Hole-Card Splitting
+
+Combine Hole1 and Hole2 into a single Hole-Card field, and rebuild the board strings:
+
+```{r}
+library(dplyr)
+
+data <- tibble::tribble(
+  ~StreetOrder, ~Hole1, ~Hole2, ~Flop1, ~Flop2, ~Flop3, ~Turn, ~River,
+  1, "Ah", "Kd", NA,    NA,    NA,    NA,   NA,
+  2, "Qs", "Qh", "2c", "7d", "9s", NA,   NA,
+  3, "Jc", "Tc", "4h", "5s", "8d", "As", NA,
+  4, "9c", "9d", "Kc", "Kh", "3s", "Jh", "Qd",
+  5, "2h", "7h", "5c", "6d", "Ts", "Ac", "Kd"
+)
+
+data <- data %>%
+  mutate(
+    HoleCards = if_else(!is.na(Hole1) & !is.na(Hole2),
+                        paste(Hole1, Hole2),
+                        NA_character_),
+
+    # Flop:
+    Flop = if_else(
+      StreetOrder >= 2 & !is.na(Flop1) & !is.na(Flop2) & !is.na(Flop3),
+      paste0("[", Flop1, " ", Flop2, " ", Flop3, "]"),
+      NA_character_
+    ),
+
+    # Turn:
+    Turn = if_else(
+      StreetOrder >= 3 & !is.na(Flop1) & !is.na(Flop2) & !is.na(Flop3) & !is.na(.data$Turn),
+      paste0("[", Flop1, " ", Flop2, " ", Flop3, "] ", .data$Turn),
+      NA_character_
+    ),
+
+    # River:
+    River = if_else(
+      StreetOrder >= 4 & !is.na(Flop1) & !is.na(Flop2) & !is.na(Flop3) &
+        !is.na(.data$Turn) & !is.na(.data$River),
+      paste0("[", Flop1, " ", Flop2, " ", Flop3, " ", .data$Turn, "] ", .data$River),
+      NA_character_
+    )
+  )
+
+data
+
+```
+
+##### 7. Integrity & Missing‐Value Rules
+
+We enforce two main rules to keep the data sane:
+
+1.  **Impute missing `StackAfter`**\
+    When legacy logs omit `StackAfter`, compute it from the difference between `StackBefore` and Contribution
+
+```{=html}
+<!-- -->
+```
+2.  **Fix impossible bets**\
+    If someone somehow "bets" more than their stack, we recast it as an all-in call and clamp the amount:
+
+    -   **Action**: change to `"all-in call"`
+    -   **BetAmount**: set to the full `StackBefore`

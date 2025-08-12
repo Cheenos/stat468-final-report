@@ -1,6 +1,34 @@
 project:
-  type: website
-  output-dir: docs
+  type: book
 
-website:
+book:
   title: "STAT 468 Final Project Report"
+  author: "Eddy Ji"
+  date: today
+  chapters:
+    - index.qmd
+    - 01-data.qmd
+    - 02-tidy.qmd
+    - 03-transform.qmd
+    - 04-modelling.qmd
+    - 05-visualize_and_communicate.qmd
+    - 06-appendix.qmd
+
+bibliography: references.bib
+csl: apa.csl
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 3
+    code-fold: true
+    number-sections: false
+  pdf:
+    number-sections: false
+
+
+editor: visual
+execute:
+  freeze: auto
+  warning: false

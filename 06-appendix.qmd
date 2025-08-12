@@ -1,0 +1,12 @@
+---
+title: "Appendix"
+format: html
+bibliography: references.bib   
+csl: apa.csl             
+---
+
+# Appendix
+
+## AI Usage
+
+`I used ChatGPT to debug my entire workflow [@chatgpt_log1; @chatgpt_log2; @chatgpt_log3, @chatgpt_log4, @chatgpt_log5, @chatgpt_log6, @chatgpt_log7].`

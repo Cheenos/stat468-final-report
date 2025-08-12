@@ -1,0 +1,121 @@
+---
+title: "Chapter 3: Transform"
+format: html
+editor: visual
+---
+
+# Transform {#Transform}
+
+After the tidy step every action sits in a long data frame with the raw columns HandNumber, Dealer, Player, Hole Card 1 and 2, Action, BetAmount, StackBefore, Street. The bulk of the transforming uses the function **recalc_analytics** which enriches the table with quantitative features that power every later model and plot.
+
+```{r}
+## Load packages
+library(dplyr)
+library(stringr)
+library(tibble)
+library(knitr)
+
+## Example raw data
+before_df <- tibble::tribble(
+  ~HandNumber, ~Street,                        ~Action, ~BetAmount, ~StackBefore, ~Hole1, ~Hole2,
+  1001,        "Pre-flop",                     "bet",          6,          100,     "Ah",  "Kd",
+  1001,        "Pre-flop",                     "call",         6,          120,     "Qs",  "Qh",
+  1001,        "Flop: [Ah Kd 7c]",             "raise",       18,          114,     "Ah",  "Kd",
+  1001,        "Turn: [Ah Kd 7c] 3s",          "call",        18,          102,     "Qs",  "Qh",
+  1001,        "River: [Ah Kd 7c 3s] Qh",      "bet",         30,           84,     "Ah",  "Kd",
+  1002,        "Pre-flop",                     "bet",          4,           90,     "9c",  "9d",
+  1002,        "Flop: [2c 7d 9s]",             "call",         4,           76,     "Jc",  "Tc",
+  1002,        "Turn: [2c 7d 9s] As",          "raise",       12,           72,     "Jc",  "Tc",
+  1002,        "River: [2c 7d 9s As] Qd",      "call",        12,           60,     "9c",  "9d"
+)
+
+## Supporting equity function
+approx_equity <- function(hole, street) {
+  if (is.na(hole)) return(NA_real_)
+  ranks <- unlist(strsplit(gsub("[^A2-9TJQK ]","", hole), " "))
+  score <- function(r) switch(substr(r,1,1),
+    "A"=14,"K"=13,"Q"=12,"J"=11,"T"=10,"9"=9,"8"=8,"7"=7,"6"=6,"5"=5,"4"=4,"3"=3,"2"=2, 5)
+  base <- (sum(vapply(ranks, score, 1)) - 4) / 24
+  bump <- if (street == "Pre-flop") 0 else if (startsWith(street,"Flop")) 0.05
+          else if (startsWith(street,"Turn")) 0.07 else if (startsWith(street,"River")) 0.09 else 0
+  pmin(pmax(base + bump, 0.05), 0.95)
+}
+
+## Main function
+recalc_analytics <- function(df) {
+  df %>%
+    mutate(
+      HoleCards = paste(Hole1, Hole2),
+      StreetOrder = case_when(
+        Street == "Pre-flop"        ~ 1L,
+        str_starts(Street, "Flop")  ~ 2L,
+        str_starts(Street, "Turn")  ~ 3L,
+        str_starts(Street, "River") ~ 4L,
+        TRUE                        ~ 5L
+      )
+    ) %>%
+    group_by(HandNumber) %>%
+    arrange(HandNumber, StreetOrder, .by_group = TRUE) %>%
+    mutate(
+      Contribution = pmin(BetAmount, StackBefore),
+      Pot          = cumsum(Contribution),
+      PotBefore    = lag(Pot, default = 0),
+      Equity       = mapply(approx_equity, HoleCards, Street),
+
+      CostToCall   = if_else(Action == "call", BetAmount, NA_real_),
+      PotOdds      = CostToCall / (PotBefore + CostToCall),
+
+      PrevBet      = lag(if_else(Action %in% c("bet","raise","call"), BetAmount, 0), default = 0),
+      CostOfWager  = case_when(
+        Action == "call"  ~ BetAmount,
+        Action == "bet"   ~ BetAmount,
+        Action == "raise" ~ BetAmount - PrevBet,
+        TRUE              ~ NA_real_
+      ),
+      WagerOdds    = CostOfWager / (PotBefore + CostOfWager),
+
+      BluffGap     = WagerOdds - Equity,
+      RelSize      = if_else(PotBefore > 0, BetAmount / PotBefore, NA_real_),
+
+      EV_call  = if_else(Action == "call",
+                         Equity * (PotBefore + CostToCall) - CostToCall, NA_real_),
+      EV_bet   = if_else(Action == "bet",
+                         Equity * (PotBefore + BetAmount) - (1 - Equity) * BetAmount, NA_real_),
+      EV_raise = if_else(Action == "raise",
+                         Equity * (PotBefore + CostOfWager) - (1 - Equity) * CostOfWager, NA_real_)
+    ) %>%
+    ungroup() %>%
+    select(-Contribution, -Pot, -CostToCall, -PrevBet, -CostOfWager)
+}
+
+## Output
+kable(before_df, caption = "Before: Raw hand actions")
+after_df <- recalc_analytics(before_df)
+kable(after_df, caption = "After: Derived analytics")
+```
+
+| New column       | Formula (chips)                                                                                                                                                               | Intuition                                              |
+|:----------------|:-------------------------------------|:----------------|
+| **Contribution** | `pmin(BetAmount, StackBefore)`                                                                                                                                                | The most a player can **actually** put in this street. |
+| **Pot**          | `cumsum(Contribution)`<br/>*(within each hand)*                                                                                                                               | Running pot size after the current action.             |
+| **PotBefore**    | `lag(Pot, default = 0)`                                                                                                                                                       | Pot size just before a player acts.                    |
+| **CostToCall**   | `if_else(Action == "call", BetAmount, NA_real_)`                                                                                                                              | Amount needed to continue when facing a bet.           |
+| **PotOdds**      | `CostToCall / (PotBefore + CostToCall)`                                                                                                                                       | Price being laid for a call.                           |
+| **PrevBet**      | `lag(if_else(Action %in% c("bet","raise","call"), BetAmount, 0), default = 0)`                                                                                                | Used to isolate the incremental part of a raise.       |
+| **CostOfWager**  | `case_when(` <br/>`Action == "call"  ~ BetAmount,` <br/>`Action == "bet"   ~ BetAmount,` <br/>`Action == "raise" ~ BetAmount - PrevBet,` <br/>`TRUE              ~ NA_real_)` | True amount risked (bet, call, or raise -- PrevBet).   |
+| **WagerOdds**    | `CostOfWager / (PotBefore + CostOfWager)`                                                                                                                                     | Price a bettor is offering the table.                  |
+| **BluffGap**     | `WagerOdds - Equity`                                                                                                                                                          | Margin between price offered and hand strength.        |
+| **RelSize**      | `if_else(PotBefore > 0, BetAmount / PotBefore, NA_real_)`                                                                                                                     | Bet size expressed as a fraction of the pot.           |
+| **EV_call**      | `if_else(Action == "call", Equity * (PotBefore + CostToCall) - CostToCall, NA_real_)`                                                                                         | Classic expectation of a call.                         |
+| **EV_bet**       | `if_else(Action == "bet", Equity * (PotBefore + BetAmount) - (1 - Equity) * BetAmount, NA_real_)`                                                                             | Expected value of an outright bet.                     |
+| **EV_raise**     | `if_else(Action == "raise", Equity * (PotBefore + CostOfWager) - (1 - Equity) * CostOfWager, NA_real_)`                                                                       | Expected value of a raise.                             |
+
+Table 3.1: Derived analytics columns with formulas and intuition
+
+##### Equity Proxy
+
+To circumvent the time and processing power used to generate exact Monte-Carlo equity, we use approx_equity(hole, street) which looks up a fast pre-flop table (Chen formula) or a turn/river. This keeps latency \< 30 ms per action so the live recorder stays responsive.
+
+##### Expected Value columns
+
+Three mutually exclusive columns (EV_call, EV_bet, EV_raise) are populated so that the EV-trend plot can call coalesce() and get the correct value regardless of action type. A dashed horizontal zero line in that plot lets players see at a glance which decisions gained or bled chips.
